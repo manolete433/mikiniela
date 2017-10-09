@@ -38,7 +38,7 @@ router.post("/api/register", function(req, res){
         "createdOn":today,
         "modifiedOn":today
     }
-    
+
     //convert checkbox values to integers
     if(users.isActive === "on") users.isActive = 1
     else users.isActive = 0;
@@ -60,36 +60,5 @@ router.post("/api/register", function(req, res){
         }
     });
 });
-
-// exports.register = function(req, res) {
-//     //console.log("req", req.body);
-//     var today = new Date();
-//     var users={
-//         "firstName":req.body.firstName,
-//         "lastName":req.body.lastName,
-//         "nickname":req.body.nickname,
-//         "email":req.body.email,
-//         "isAdmin":req.body.isAdmin,
-//         "isActive":req.body.isActive,
-//         "passwordHash":req.body.passwordHash,
-//         "createdOn":today,
-//         "modifiedOn":today
-//     }
-//     connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
-//         if(error){
-//             console.log("error occurred: " + error);
-//             res.send({
-//                 "code":400,
-//                 "failed":"error occurred"
-//             });
-//         }else{
-//             console.log("The solution is: ", results);
-//             res.send({
-//                 "code":200,
-//                 "success":"user:" + req.body.email + " registered successfully"
-//             });
-//         }
-//     });
-// }
 
 module.exports = router;
