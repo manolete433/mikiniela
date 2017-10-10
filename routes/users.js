@@ -21,20 +21,23 @@ connection.connect(function (err) {
     }
 });
 
-router.get("/register", function(req, res) {
-    res.render("register");
+//Users New
+router.get("/", function(req, res) {
+    res.render("users/new");
+    //here is should display all the users, instead of new user form
 });
 
+//Users Create
 router.post("/api/register", function(req, res){
     var today = new Date();
     var users={
-        "firstName":req.body.firstName,
-        "lastName":req.body.lastName,
-        "username":req.body.username,
-        "email":req.body.email,
-        "isAdmin":req.body.isAdmin,
-        "isActive":req.body.isActive,
-        "passwordHash":req.body.password,
+        "firstName":req.body.inputFirstName,
+        "lastName":req.body.inputLastName,
+        "username":req.body.inputUsername,
+        "email":req.body.inputEmail,
+        "isAdmin":req.body.inputIsAdmin,
+        "isActive":req.body.inputIsActive,
+        "passwordHash":req.body.inputPassword,
         "createdOn":today,
         "modifiedOn":today
     }
@@ -55,7 +58,7 @@ router.post("/api/register", function(req, res){
             console.log("The solution is: ", results);
             res.send({
                 "code":200,
-                "success":"user:" + req.body.email + " registered successfully"
+                "success":"user:" + req.body.inputEmail + " registered successfully"
             });
         }
     });

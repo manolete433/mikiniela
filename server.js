@@ -1,6 +1,6 @@
 var express    = require("express");
 var index = require('./routes/index');
-var register = require('./routes/registerroutes');
+var userRoutes = require('./routes/users');
 var login = require('./routes/loginroutes');
 var bodyParser = require('body-parser');
 var app = express();
@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
 
 app.use('/', index);
 app.use('/api', router);
-app.use('/', register);
+app.use('/users', userRoutes);
 
 //route to handle user registration
 // router.post('/register',register.register); //registration
