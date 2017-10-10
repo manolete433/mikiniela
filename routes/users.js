@@ -23,45 +23,62 @@ connection.connect(function (err) {
 
 //Users New
 router.get("/", function(req, res) {
-    res.render("users/new");
+    res.render("users/new", {success: false, errors: req.session.errors});
+    req.session.errors = null;
     //here is should display all the users, instead of new user form
 });
 
 //Users Create
-router.post("/api/register", function(req, res){
-    var today = new Date();
-    var users={
-        "firstName":req.body.inputFirstName,
-        "lastName":req.body.inputLastName,
-        "username":req.body.inputUsername,
-        "email":req.body.inputEmail,
-        "isAdmin":req.body.inputIsAdmin,
-        "isActive":req.body.inputIsActive,
-        "passwordHash":req.body.inputPassword,
-        "createdOn":today,
-        "modifiedOn":today
-    }
+router.post("/api/register", function(req, res, next){
+    req.check("inputFirstName", "Nombre es inválido").notEmpty();
+    req.check("inputLastName", "Apellido(s) es inválido").notEmpty();
+    req.check("inputUsername", "Usuario es inválido").notEmpty();
+    req.check("inputEmail", "Email inválido").isEmail();
+    req.check("inputPassword", "Password es inválido").isLength({min: 4}).equals("inputPasswordConfirm");
 
-    //convert checkbox values to integers
-    if(users.isActive === "on") users.isActive = 1
-    else users.isActive = 0;
-    if(users.isAdmin === "on") users.isAdmin = 1
-    else users.isAdmin = 0;
-    connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
-        if(error){
-            console.log("error occurred: " + error);
-            res.send({
-                "code":400,
-                "failed":"error occurred"
-            });
-        }else{
-            console.log("The solution is: ", results);
-            res.send({
-                "code":200,
-                "success":"user:" + req.body.inputEmail + " registered successfully"
-            });
+    var errors = req.validationErrors();
+
+    if(errors){
+        req.session.errors = errors;
+    }else{
+        var today = new Date();
+        var users={
+            "firstName":req.body.inputFirstName,
+            "lastName":req.body.inputLastName,
+            "username":req.body.inputUsername,
+            "email":req.body.inputEmail,
+            "isAdmin":req.body.inputIsAdmin,
+            "isActive":req.body.inputIsActive,
+            "passwordHash":req.body.inputPassword,
+            "createdOn":today,
+            "modifiedOn":today
         }
-    });
+    
+        //check validity
+    
+        //convert checkbox values to integers
+        if(users.isActive === "on") users.isActive = 1
+        else users.isActive = 0;
+        if(users.isAdmin === "on") users.isAdmin = 1
+        else users.isAdmin = 0;
+        connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
+            if(error){
+                console.log("error occurred: " + error);
+                res.send({
+                    "code":400,
+                    "failed":"error occurred"
+                });
+            }else{
+                console.log("The solution is: ", results);
+                res.send({
+                    "code":200,
+                    "success":"user:" + req.body.inputEmail + " registered successfully"
+                });
+            }
+        });
+    }
+    res.redirect("/");
+   
 });
 
 module.exports = router;

@@ -2,13 +2,19 @@ var express    = require("express");
 var index = require('./routes/index');
 var userRoutes = require('./routes/users');
 var login = require('./routes/loginroutes');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+var expressSession = require('express-session');
 var app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(expressValidator());
+app.use(cookieParser());
+app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

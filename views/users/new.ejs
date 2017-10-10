@@ -1,60 +1,71 @@
 <% include ../partials/header %>
-
 <div class="container">
     <div class="row">
         <h1 style="text-align: center;">Registrar Usuario</h1>
         <div class="row">
             <div style="width: 30%; margin: 25px auto;" >
-                <form action="users/api/register" method="POST" data-toggle="validator" role:"form" novalidate id="needs-validation">
-                <div class="form-group">
-                    <label for="inputFirstName" class="control-label">Nombre: </label>
-                    <input class="form-control" type="text" name="inputFirstName" placeholder="Nombre" required>
-                </div>
-                <div class="form-group">
-                        <label for="inputLastName" class="control-label">Apellido(s): </label>
-                    <input class="form-control" type="text" name="inputLastName" placeholder="Apellido(s)" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputUsername" class="control-label">Usuario: </label>
-                    <input class="form-control" type="text" name="inputUsername" placeholder="Usuario" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail" class="control-label">Email: </label>
-                    <input class="form-control" type="email" name="inputEmail" placeholder="Email" required>
-                    <div class="invalid-feedback">
-                            Por favor ingresa un email válido.
-                    </div>
-                </div>
-                <div class="form-inline row" style="text-align: center;">
-                    <div class="form-group">
-                        <label for="inputIsAdmin" class="control-label">Es Administrador: </label>
-                        <input class="form-control" type="checkbox" name="inputIsAdmin">
-                    </div>
-                    <div class="form-group" style="text-align: center;">
-                        <label for="inputIsActive" class="control-label">Está Activo: </label>
-                        <input class="form-control" type="checkbox" name="inputIsActive" checked>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputPassword" class="control-label">Contraseña: </label>
-                    <div class="form-inline row">
-                            <div class="form-group col-sm-6">
-                            <input type="password" data-minlength="6" class="form-control" id="inputPassword" name="inputPassword" placeholder="Contraseña" required>
-                            <div class="help-block">Mínimo de 6 caracteres</div>
-                            </div>
-                        <div class="form-group col-sm-6">
-                          <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ooops, no es igual al password anterior" placeholder="Confirma tu Contraseña" required>
-                          <div class="help-block with-errors"></div>
+                <% if (errors !== undefined){ %>
+                    <section class="errors">
+                        <p>There are erros in the form</p>
+                        <% for (const error of errors){ %>
+                            <li><%= error.msg %> </li>
+                        <% } %>
+                    </section>
+                    <form action="users/api/register" method="POST" data-toggle="validator" role:"form" novalidate id="needs-validation">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="control-label">Nombre: </label>
+                            <input class="form-control" type="text" name="inputFirstName" placeholder="Nombre" required>
                         </div>
-                    </div>
-                </div>
-                <!-- <div class="form-group">
-                    <input class="form-control" type="password" name="password" placeholder="Introduce su contraseña de nuevo">
-                </div> -->
-                <div class="form-group">
-                    <button class="btn btn-large btn-primary btn-block">Registrar</button>
-                </div>
-                </form>
+                        <div class="form-group">
+                                <label for="inputLastName" class="control-label">Apellido(s): </label>
+                            <input class="form-control" type="text" name="inputLastName" placeholder="Apellido(s)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUsername" class="control-label">Usuario: </label>
+                            <input class="form-control" type="text" name="inputUsername" placeholder="Usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="control-label">Email: </label>
+                            <input class="form-control" type="email" name="inputEmail" placeholder="Email" required>
+                            <div class="invalid-feedback">
+                                    Por favor ingresa un email válido.
+                            </div>
+                        </div>
+                        <div class="form-inline row" style="text-align: center;">
+                            <div class="form-group">
+                                <label for="inputIsAdmin" class="control-label">Es Administrador: </label>
+                                <input class="form-control" type="checkbox" name="inputIsAdmin">
+                            </div>
+                            <div class="form-group" style="text-align: center;">
+                                <label for="inputIsActive" class="control-label">Está Activo: </label>
+                                <input class="form-control" type="checkbox" name="inputIsActive" checked>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="control-label">Contraseña: </label>
+                            <div class="form-inline row">
+                                    <div class="form-group col-sm-6">
+                                    <input type="password" data-minlength="6" class="form-control" id="inputPassword" name="inputPassword" placeholder="Contraseña" required>
+                                    <div class="help-block">Mínimo de 6 caracteres</div>
+                                    </div>
+                                <div class="form-group col-sm-6">
+                                <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ooops, no es igual al password anterior" placeholder="Confirma tu Contraseña" required>
+                                <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <input class="form-control" type="password" name="password" placeholder="Introduce su contraseña de nuevo">
+                        </div> -->
+                        <div class="form-group">
+                            <button class="btn btn-large btn-primary btn-block">Registrar</button>
+                        </div>
+                        </form>
+                <% } else{ %>
+                    <section class="sucess">
+                            <h2>Successful validation!</h2>
+                    </section>
+                <% } %>
             </div>
         </div>
     </div>
