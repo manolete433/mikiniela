@@ -23,7 +23,7 @@ connection.connect(function (err) {
 
 //Users New
 router.get("/", function(req, res) {
-    res.render("users/new", {success: false, errors: req.session.errors});
+    res.render("users/new", {success: req.session.success, errors: req.session.errors});
     req.session.errors = null;
     //here is should display all the users, instead of new user form
 });
@@ -40,7 +40,9 @@ router.post("/api/register", function(req, res, next){
 
     if(errors){
         req.session.errors = errors;
+        req.session.success = false;
     }else{
+        req.session.success = true;
         var today = new Date();
         var users={
             "firstName":req.body.inputFirstName,
@@ -53,9 +55,7 @@ router.post("/api/register", function(req, res, next){
             "createdOn":today,
             "modifiedOn":today
         }
-    
-        //check validity
-    
+        
         //convert checkbox values to integers
         if(users.isActive === "on") users.isActive = 1
         else users.isActive = 0;

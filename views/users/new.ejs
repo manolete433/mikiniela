@@ -5,12 +5,13 @@
         <div class="row">
             <div style="width: 30%; margin: 25px auto;" >
                 <% if (errors !== undefined){ %>
-                    <section class="errors">
+                    <section class="alert alert-danger">
                         <p>There are erros in the form</p>
                         <% for (const error of errors){ %>
                             <li><%= error.msg %> </li>
                         <% } %>
                     </section>
+                <% } %>
                     <form action="users/api/register" method="POST" data-toggle="validator" role:"form" novalidate id="needs-validation">
                         <div class="form-group">
                             <label for="inputFirstName" class="control-label">Nombre: </label>
@@ -61,11 +62,6 @@
                             <button class="btn btn-large btn-primary btn-block">Registrar</button>
                         </div>
                         </form>
-                <% } else{ %>
-                    <section class="sucess">
-                            <h2>Successful validation!</h2>
-                    </section>
-                <% } %>
             </div>
         </div>
     </div>
