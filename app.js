@@ -41,19 +41,19 @@ var User = connection.define('user', {
 });
 
 connection.sync().then(function () {
-    User.create({
-        firstName: "Cache",
-        lastName: "Rios",
-        username: "Cachetes",
-        email: "cachetes@cachetes",
-        isAdmin: 1,
-        isActive: 1,
-        password: "Cachetes" 
-    }).then(function(){
-        User.findById(1).then(function(user){
-            console.log(user.dataValues);
-        });
-    });
+    // User.create({
+    //     firstName: "Cache",
+    //     lastName: "Rios",
+    //     username: "Cachetes",
+    //     email: "cachetes@cachetes",
+    //     isAdmin: 1,
+    //     isActive: 1,
+    //     password: "Cachetes" 
+    // }).then(function(){
+    //     User.findById(1).then(function(user){
+    //         console.log(user.dataValues);
+    //     });
+    // });
 });
 // sequelize
 
