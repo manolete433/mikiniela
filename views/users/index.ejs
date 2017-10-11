@@ -1,6 +1,11 @@
 <% include ../partials/header %>
 <div class="container">
     <h1>This is the index of users!</h1>
+    <% users.forEach(function(user){ %>
+        <div class="col-md-3 col-sm-6">
+            <h4><%= user.firstName %></h4>
+        </div>
+    <% }) %>
 </div>
 
 <% include ../partials/footer %>

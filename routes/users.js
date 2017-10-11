@@ -22,8 +22,14 @@ connection.connect(function (err) {
 });
 
 //Users Index
-router.get("/", function(req, res){
-    res.render("users/index");
+router.get("/", function(req, res, next){
+    connection.query('SELECT * FROM USERS', function(error, results, fields){
+        if(error){
+            console.log("error occurred while trying to get all the users from the DB. " + error + new Date());
+        }else{
+            res.render("users/index", {users:results});
+        }
+    });
 });
 
 //Users New
