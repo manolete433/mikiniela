@@ -30,55 +30,54 @@ router.get("/", function(req, res) {
 
 //Users Create
 router.post("/api/register", function(req, res, next){
-    req.check("inputFirstName", "Nombre es inválido").notEmpty();
-    req.check("inputLastName", "Apellido(s) es inválido").notEmpty();
-    req.check("inputUsername", "Usuario es inválido").notEmpty();
-    req.check("inputEmail", "Email inválido").isEmail();
-    req.check("inputPassword", "Password es inválido").isLength({min: 4}).equals("inputPasswordConfirm");
+    // req.check("inputFirstName", "Name is invalid").notEmpty();
+    // req.check("inputLastName", "Last Name is invalid").notEmpty();
+    // req.check("inputUsername", "Username is invalid").notEmpty();
+    // req.check("inputEmail", "Email is invalid").isEmail();
+    // req.check("inputPassword", "Password is invalid").isLength({min: 4});
+    // req.check("inputPasswordConfirm", "Password didn't match").equals("inputPassword");
 
-    var errors = req.validationErrors();
-
-    if(errors){
-        req.session.errors = errors;
-        req.session.success = false;
-    }else{
-        req.session.success = true;
-        var today = new Date();
-        var users={
-            "firstName":req.body.inputFirstName,
-            "lastName":req.body.inputLastName,
-            "username":req.body.inputUsername,
-            "email":req.body.inputEmail,
-            "isAdmin":req.body.inputIsAdmin,
-            "isActive":req.body.inputIsActive,
-            "passwordHash":req.body.inputPassword,
-            "createdOn":today,
-            "modifiedOn":today
-        }
-        
-        //convert checkbox values to integers
-        if(users.isActive === "on") users.isActive = 1
-        else users.isActive = 0;
-        if(users.isAdmin === "on") users.isAdmin = 1
-        else users.isAdmin = 0;
-        connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
-            if(error){
-                console.log("error occurred: " + error);
-                res.send({
-                    "code":400,
-                    "failed":"error occurred"
-                });
-            }else{
-                console.log("The solution is: ", results);
-                res.send({
-                    "code":200,
-                    "success":"user:" + req.body.inputEmail + " registered successfully"
-                });
-            }
-        });
+    // if(errors){
+    //     req.session.errors = errors;
+    //     req.session.success = false;
+    //     res.redirect('back');
+    // }else{
+// }
+    req.session.success = true;
+    var today = new Date();
+    var users={
+        "firstName":req.body.inputFirstName,
+        "lastName":req.body.inputLastName,
+        "username":req.body.inputUsername,
+        "email":req.body.inputEmail,
+        "isAdmin":req.body.inputIsAdmin,
+        "isActive":req.body.inputIsActive,
+        "passwordHash":req.body.inputPassword,
+        "createdOn":today,
+        "modifiedOn":today
     }
+    
+    //convert checkbox values to integers
+    if(users.isActive === "on") users.isActive = 1
+    else users.isActive = 0;
+    if(users.isAdmin === "on") users.isAdmin = 1
+    else users.isAdmin = 0;
+    connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
+        if(error){
+            console.log("error occurred: " + error);
+            res.send({
+                "code":400,
+                "failed":"error occurred"
+            });
+        }else{
+            console.log("The solution is: ", results);
+            res.send({
+                "code":200,
+                "success":"user:" + req.body.inputEmail + " registered successfully"
+            });
+        }
+    });
     res.redirect("/");
-   
 });
 
 module.exports = router;

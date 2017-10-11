@@ -17,3 +17,18 @@
         };
     });
     
+
+
+    req.check("inputFirstName", "Name is invalid").notEmpty();
+    req.check("inputLastName", "Last Name is invalid").notEmpty();
+    req.check("inputUsername", "Username is invalid").notEmpty();
+    req.check("inputEmail", "Email is invalid").isEmail();
+    req.check("inputPassword", "Password is invalid").isLength({min: 4});
+    req.check("inputPasswordConfirm", "Password didn't match").equals("inputPassword");
+
+    if(errors){
+        req.session.errors = errors;
+        req.session.success = false;
+        res.redirect('back');
+    }else{
+        req.session.success = true;

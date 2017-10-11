@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var expressSession = require('express-session');
+var validator = require("validator");
 var app = express();
 
 app.set("view engine", "ejs");
