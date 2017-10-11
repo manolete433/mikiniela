@@ -13,11 +13,12 @@ var connection = mysql.createConnection({
     // password: process.env.DB_PASSWORD,
     // database: process.env.DB_HOST
 });
+
 connection.connect(function (err) {
     if (!err) {
-        console.log("Database is connected ... nn");
+        console.log("Database is connected inside routes/users.js ... nn");
     } else {
-        console.log("Error connecting database ... nn");
+        console.log("Error connecting database inside routes/users.js ... nn");
     }
 });
 

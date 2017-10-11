@@ -5,6 +5,7 @@ var login = require('./routes/loginroutes');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
+var Sequelize = require("sequelize");
 // var expressValidator = require('express-validator');
 // var expressSession = require('express-session');
 // var validator = require("validator");

@@ -12,9 +12,9 @@ var connection = mysql.createConnection({
 });
 connection.connect(function (err) {
     if (!err) {
-        console.log("Database is connected ... nn");
+        console.log("Database is connected inside routes/loginroutes.js ... nn");
     } else {
-        console.log("Error connecting database ... nn");
+        console.log("Error connecting database inside routes/loginroutes.js ... nn");
     }
 });
 
