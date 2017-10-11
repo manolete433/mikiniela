@@ -59,15 +59,15 @@ router.post("/", function(req, res, next){
     // req.session.success = true;
     var today = new Date();
     var users={
-        "firstName":req.body.inputFirstName,
-        "lastName":req.body.inputLastName,
-        "username":req.body.inputUsername,
-        "email":req.body.inputEmail,
-        "isAdmin":req.body.inputIsAdmin,
-        "isActive":req.body.inputIsActive,
-        "passwordHash":req.body.inputPassword,
-        "createdOn":today,
-        "modifiedOn":today
+        "firstName":    req.body.inputFirstName,
+        "lastName":     req.body.inputLastName,
+        "username":     req.body.inputUsername,
+        "email":        req.body.inputEmail,
+        "isAdmin":      req.body.inputIsAdmin,
+        "isActive":     req.body.inputIsActive,
+        "passwordHash": req.body.inputPassword,
+        "createdOn":    today,
+        "modifiedOn":   today
     }
     
     //convert checkbox values to integers

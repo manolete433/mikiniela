@@ -25,6 +25,38 @@ app.use(function(req, res, next) {
     next();
 });
 
+//Using sequelize
+var connection = new Sequelize("mikiniela", "root", "Emesene@321", {
+    dialect: 'mysql'
+});
+
+var User = connection.define('user', {
+    firstName: Sequelize.STRING,
+    lastName: Sequelize.STRING,
+    username: Sequelize.STRING,
+    email: Sequelize.STRING,
+    isAdmin: Sequelize.BOOLEAN,
+    isActive: Sequelize.BOOLEAN,
+    password: Sequelize.STRING
+});
+
+connection.sync().then(function () {
+    User.create({
+        firstName: "Cache",
+        lastName: "Rios",
+        username: "Cachetes",
+        email: "cachetes@cachetes",
+        isAdmin: 1,
+        isActive: 1,
+        password: "Cachetes" 
+    }).then(function(){
+        User.findById(1).then(function(user){
+            console.log(user.dataValues);
+        });
+    });
+});
+// sequelize
+
 var router = express.Router();
 // test route
 router.get('/', function(req, res) {
