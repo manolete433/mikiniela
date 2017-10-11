@@ -4,18 +4,20 @@ var userRoutes = require('./routes/users');
 var login = require('./routes/loginroutes');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var expressValidator = require('express-validator');
-var expressSession = require('express-session');
-var validator = require("validator");
+var flash = require('connect-flash');
+// var expressValidator = require('express-validator');
+// var expressSession = require('express-session');
+// var validator = require("validator");
 var app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressValidator());
+// app.use(expressValidator());
 app.use(cookieParser());
-app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
+app.use(flash());
+// app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

@@ -21,15 +21,21 @@ connection.connect(function (err) {
     }
 });
 
+//Users Index
+router.get("/", function(req, res){
+    res.render("users/index");
+});
+
 //Users New
-router.get("/", function(req, res) {
-    res.render("users/new", {success: req.session.success, errors: req.session.errors});
-    req.session.errors = null;
+router.get("/new", function(req, res) {
+    // res.render("users/new", {success: req.session.success, errors: req.session.errors});
+    res.render("users/new");
+    // req.session.errors = null;
     //here is should display all the users, instead of new user form
 });
 
 //Users Create
-router.post("/api/register", function(req, res, next){
+router.post("/", function(req, res, next){
     // req.check("inputFirstName", "Name is invalid").notEmpty();
     // req.check("inputLastName", "Last Name is invalid").notEmpty();
     // req.check("inputUsername", "Username is invalid").notEmpty();
@@ -43,7 +49,7 @@ router.post("/api/register", function(req, res, next){
     //     res.redirect('back');
     // }else{
 // }
-    req.session.success = true;
+    // req.session.success = true;
     var today = new Date();
     var users={
         "firstName":req.body.inputFirstName,
@@ -64,20 +70,18 @@ router.post("/api/register", function(req, res, next){
     else users.isAdmin = 0;
     connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
         if(error){
+            console.log("User with email: " + users.email + " could not be inserted. " + new Date());
             console.log("error occurred: " + error);
-            res.send({
-                "code":400,
-                "failed":"error occurred"
-            });
+            // res.send({
+            //     "code":400,
+            //     "failed":"error occurred"
+            // });
+            res.redirect("back");
         }else{
-            console.log("The solution is: ", results);
-            res.send({
-                "code":200,
-                "success":"user:" + req.body.inputEmail + " registered successfully"
-            });
+            console.log("User with email: " + users.email + " inserted. " + new Date());
+             res.redirect("/users");
         }
     });
-    res.redirect("/");
 });
 
 module.exports = router;
