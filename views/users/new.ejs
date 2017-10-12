@@ -1,4 +1,8 @@
 <% include ../partials/header %>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<!-- speparate in a special function couldn't make it workv><-->
+<script src="/public/js/createUserFormValidation.js" type="text/javascript"></script>
+<!-- speparate in a special function v><-->
 
 <div class="container">
     <div class="row">
@@ -45,7 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group control-group">
-                        <button class="btn btn-large btn-primary btn-block">Submit</button>
+                        <button class="btn btn-large btn-primary btn-block" type="Submit">Submit</button>
                     </div>
                 </form>
                 <a href="/users">Go Back</a>
@@ -53,10 +57,6 @@
         </div>
     </div>
 </div>
-
-<!-- speparate in a special function v><-->
-<script src="/public/js/createUserFormValidation.js" type="text/javascript"></script>
-<!-- speparate in a special function v><-->
 
 <script>
     $(document).ready(function () {
