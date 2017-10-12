@@ -16,19 +16,13 @@
             });
         };
     });
-    
+
+JQUERY VALIDATION
+https://jsfiddle.net/elektriheart/vwoojkob/
+jsfiddle.net
+Bootstrap jQuery Validation - JSFiddle
+Test your JavaScript, CSS, HTML or CoffeeScript online with JSFiddle code editor.
 
 
-    req.check("inputFirstName", "Name is invalid").notEmpty();
-    req.check("inputLastName", "Last Name is invalid").notEmpty();
-    req.check("inputUsername", "Username is invalid").notEmpty();
-    req.check("inputEmail", "Email is invalid").isEmail();
-    req.check("inputPassword", "Password is invalid").isLength({min: 4});
-    req.check("inputPasswordConfirm", "Password didn't match").equals("inputPassword");
-
-    if(errors){
-        req.session.errors = errors;
-        req.session.success = false;
-        res.redirect('back');
-    }else{
-        req.session.success = true;
+[11:23] 
+http://jsfiddle.net/sTDcF/8/

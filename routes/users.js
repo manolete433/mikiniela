@@ -23,18 +23,20 @@ connection.connect(function (err) {
 });
 
 //Users Index
-router.get("/", function(req, res, next){
-    connection.query('SELECT * FROM USERS', function(error, results, fields){
-        if(error){
+router.get("/", function (req, res, next) {
+    connection.query('SELECT * FROM USERS', function (error, results, fields) {
+        if (error) {
             console.log("error occurred while trying to get all the users from the DB. " + error + new Date());
-        }else{
-            res.render("users/index", {users:results});
+        } else {
+            res.render("users/index", {
+                users: results
+            });
         }
     });
 });
 
 //Users New
-router.get("/new", function(req, res) {
+router.get("/new", function (req, res) {
     // res.render("users/new", {success: req.session.success, errors: req.session.errors});
     res.render("users/new");
     // req.session.errors = null;
@@ -42,7 +44,7 @@ router.get("/new", function(req, res) {
 });
 
 //Users Create
-router.post("/", function(req, res, next){
+router.post("/", function (req, res, next) {
     // req.check("inputFirstName", "Name is invalid").notEmpty();
     // req.check("inputLastName", "Last Name is invalid").notEmpty();
     // req.check("inputUsername", "Username is invalid").notEmpty();
@@ -55,28 +57,28 @@ router.post("/", function(req, res, next){
     //     req.session.success = false;
     //     res.redirect('back');
     // }else{
-// }
+    // }
     // req.session.success = true;
     var today = new Date();
 
-    var users={
-        "firstName":    req.body.inputFirstName,
-        "lastName":     req.body.inputLastName,
-        "username":     req.body.inputUsername,
-        "email":        req.body.inputEmail,
-        "isAdmin":      req.body.inputIsAdmin,
-        "isActive":     req.body.inputIsActive,
+    var users = {
+        "firstName": req.body.inputFirstName,
+        "lastName": req.body.inputLastName,
+        "username": req.body.inputUsername,
+        "email": req.body.inputEmail,
+        "isAdmin": req.body.inputIsAdmin,
+        "isActive": req.body.inputIsActive,
         "password": req.body.inputPassword
     }
-    
+
     //convert checkbox values to integers
-    if(users.isActive === "on") users.isActive = 1
+    if (users.isActive === "on") users.isActive = 1
     else users.isActive = 0;
-    if(users.isAdmin === "on") users.isAdmin = 1
+    if (users.isAdmin === "on") users.isAdmin = 1
     else users.isAdmin = 0;
 
-    connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
-        if(error){
+    connection.query('INSERT INTO users SET ?', users, function (error, results, fields) {
+        if (error) {
             console.log("User with email: " + users.email + " could not be inserted. " + new Date());
             console.log("error occurred: " + error);
             // res.send({
@@ -84,9 +86,9 @@ router.post("/", function(req, res, next){
             //     "failed":"error occurred"
             // });
             res.redirect("back");
-        }else{
+        } else {
             console.log("User with email: " + users.email + " inserted. " + new Date());
-             res.redirect("/users");
+            res.redirect("/users");
         }
     });
 });
