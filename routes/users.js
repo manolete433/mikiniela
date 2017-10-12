@@ -58,6 +58,7 @@ router.post("/", function(req, res, next){
 // }
     // req.session.success = true;
     var today = new Date();
+
     var users={
         "firstName":    req.body.inputFirstName,
         "lastName":     req.body.inputLastName,
@@ -65,9 +66,7 @@ router.post("/", function(req, res, next){
         "email":        req.body.inputEmail,
         "isAdmin":      req.body.inputIsAdmin,
         "isActive":     req.body.inputIsActive,
-        "passwordHash": req.body.inputPassword,
-        "createdOn":    today,
-        "modifiedOn":   today
+        "password": req.body.inputPassword
     }
     
     //convert checkbox values to integers
@@ -75,6 +74,7 @@ router.post("/", function(req, res, next){
     else users.isActive = 0;
     if(users.isAdmin === "on") users.isAdmin = 1
     else users.isAdmin = 0;
+
     connection.query('INSERT INTO users SET ?', users, function(error, results, fields){
         if(error){
             console.log("User with email: " + users.email + " could not be inserted. " + new Date());
