@@ -36,7 +36,7 @@ router.get("/", function (req, res, next) {
 });
 
 //Users New
-router.get("/new", function (req, res) {
+router.get("/new", function (req, res, next) {
     // res.render("users/new", {success: req.session.success, errors: req.session.errors});
     res.render("users/new");
     // req.session.errors = null;

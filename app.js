@@ -9,6 +9,11 @@ var Sequelize = require("sequelize");
 // var expressValidator = require('express-validator');
 // var expressSession = require('express-session');
 // var validator = require("validator");
+require('dotenv').load();
+var DB_NAME = process.env.DB_NAME;
+var DB_USER = process.env.DB_USER;
+var DB_PASSWORD = process.env.DB_PASSWORD;
+var bcrypt = require("bcryptjs");
 var app = express();
 
 app.set("view engine", "ejs");
@@ -28,7 +33,7 @@ app.use(function (req, res, next) {
 });
 
 //Using sequelize
-var sequelize = new Sequelize("mikiniela", "root", "Emesene@321", {
+var sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     dialect: 'mysql'
 });
 
@@ -70,22 +75,36 @@ const User = sequelize.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     }
+}, {
+    hooks: {
+        beforeValidate: function () {
+            console.log("BeforeValidate");
+        },
+        afterValidate: function (user) {
+            user.password = bcrypt.hashSync(user.password, 8);
+        },
+        beforeCreate: function () {
+            console.log("BeforeCreate");
+        },
+        afterCreate: function (res) {
+            console.log("AfterCreate: Created User with email + ", res.dataValues.email);
+        }
+    }
 });
 
 sequelize.sync().then(function () {
         logging: console.log
+        // DO SOMETHING AFTER CREATING THE DB
         // User.create({
         //     firstName: "Cache",
         //     lastName: "Rios",
         //     username: "Cachetes",
-        //     email: "cachetes@cachetes",
+        //     email: "cachetes@cachetes.com",
         //     isAdmin: 1,
         //     isActive: 1,
-        //     password: "Cachetes" 
-        // }).then(function(){
-        //     User.findById(1).then(function(user){
-        //         console.log(user.dataValues);
-        //     });
+        //     password: "Cachetes"
+        // })
+        // .then(function () {
         // });
     })
     .catch(function (error) {
