@@ -37,11 +37,11 @@ const User = sequelize.define('user', {
         }
     },
     isAdmin: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.BOOLEAN,
         defaultValue: 0
     },
     isActive: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.BOOLEAN,
         defaultValue: 1
     },
     password: {
