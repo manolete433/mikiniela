@@ -1,16 +1,8 @@
 var Sequelize = require("sequelize");
+const db = require('./db');
 var bcrypt = require("bcryptjs");
-require('dotenv').load();
-var DB_NAME = process.env.DB_NAME;
-var DB_USER = process.env.DB_USER;
-var DB_PASSWORD = process.env.DB_PASSWORD;
-var DB_HOST = process.env.DB_HOST;
 
-var sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-    dialect: 'mysql'
-});
-
-const User = sequelize.define('user', {
+const User = db.define('user', {
     // slug:{
     //     type: Sequelize.STRING,
     //     primaryKey: true
@@ -65,24 +57,25 @@ const User = sequelize.define('user', {
     }
 });
 
-sequelize.sync().then(function () {
-    console.log("Hello from sequelize.sync inside MODELS/USER")
-    logging: console.log
-    // DO SOMETHING AFTER CREATING THE DB
-    // User.create({
-    //     firstName: "Cache",
-    //     lastName: "Rios",
-    //     username: "Cachetes",
-    //     email: "cachetes@cachetes.com",
-    //     isAdmin: 1,
-    //     isActive: 1,
-    //     password: "Cachetes"
-    // })
-    // .then(function () {
-    // });
-})
-.catch(function (error) {
-    console.log(error);
-});
+//STUFF TO DO AFTER DB WAS CREATED
+// db.sync().then(function () {
+//     console.log("Hello from sequelize.sync inside MODELS/USER")
+//     logging: console.log
+//     // DO SOMETHING AFTER CREATING THE DB
+//     // User.create({
+//     //     firstName: "Cache",
+//     //     lastName: "Rios",
+//     //     username: "Cachetes",
+//     //     email: "cachetes@cachetes.com",
+//     //     isAdmin: 1,
+//     //     isActive: 1,
+//     //     password: "Cachetes"
+//     // })
+//     // .then(function () {
+//     // });
+// })
+// .catch(function (error) {
+//     console.log(error);
+// });
 
 module.exports = User;

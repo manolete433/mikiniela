@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1 style="text-align: center;">
+                <%= user.username %>
+            </h1>
+            <div class="row">
+                <div style="width: 30%; margin: 25px auto;">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>Name: </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <%= user.firstName %>
+                                            <%= user.lastName %>
+                                    </span>
+                                </td>
+                                <tr>
+                                    <td>
+                                        <span>Email: </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <%= user.email %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Only if admin -->
+                <div style="text-align: center;">
+                    <button class="btn btn-xs btn-warning">Edit</button>
+                    <!-- Only if admin -->
+                    <a href="/users">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>
