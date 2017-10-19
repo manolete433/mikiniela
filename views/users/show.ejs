@@ -1,4 +1,7 @@
 <% include ../partials/header %>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="/javascripts/createUserFormValidation.js" type="text/javascript"></script>
+
     <div class="container">
         <div class="row">
             <h1 style="text-align: center;">
@@ -34,7 +37,11 @@
                 </div>
                 <!-- Only if admin -->
                 <div style="text-align: center;">
-                    <button class="btn btn-xs btn-warning">Edit</button>
+                    <!-- Below line is causing issues -->
+                    <a class="btn btn-xs btn-warning" href="/users/<%= user.id %>/edit">Edit</a>
+                    <form class="delete-form" action="/users/<%= user.id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger">Deactivate</button>
+                    </form>
                     <!-- Only if admin -->
                     <a href="/users">Go Back</a>
                 </div>

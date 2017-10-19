@@ -1,12 +1,20 @@
 <% include ../partials/header %>
-<div class="container">
-    <h1>This is the index of users!</h1>
-    <% users.forEach(function(user){ %>
-        <div class="col-md-3 col-sm-6">
-            <h4><%= user.firstName %></h4>
+    <div class="container">
+        <div class="row">
+            <h1>This is the index of users!</h1>
+            <% users.forEach(function(user){ %>
+                <div class="col-md-3 col-sm-6">
+                    <h4>
+                        <a href="/users/<%= user.id %>">
+                            <%= user.firstName %>
+                        </a>
+                    </h4>
+                </div>
+                <% }) %>
         </div>
-    <% }) %>
-    <a href="/users/new">Add a New User</a>
-</div>
+        <div class="row">
+            <a href="/users/new">Add a New User</a>
+        </div>
+    </div>
 
-<% include ../partials/footer %>
+    <% include ../partials/footer %>

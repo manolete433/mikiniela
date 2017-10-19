@@ -5,6 +5,7 @@ var login = require('./routes/loginroutes');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
+var methodOverride = require("method-override");
 var app = express();
 
 app.set("view engine", "ejs");
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 // app.use(expressValidator());
 app.use(cookieParser());
+app.use(methodOverride("_method"));
 app.use(flash());
 // app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 app.use(function (req, res, next) {

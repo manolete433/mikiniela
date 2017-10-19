@@ -49,7 +49,6 @@ router.post("/", function (req, res, next) {
 
 //Users Show
 router.get("/:id", function (req, res) {
-    //find the user with provided ID
     User.findById(req.params.id).then((foundUser) => {
         if (!foundUser) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -59,7 +58,67 @@ router.get("/:id", function (req, res) {
                 user: foundUser
             });
         }
-        }).catch((error) => {
+    }).catch((error) => {
+        //we can use flash to show the error!!!
+        res.status(500).send(error);
+    });
+});
+
+// Users Edit
+router.get("/:id/edit", function (req, res) {
+    User.findById(req.params.id).then((foundUser) => {
+        if (!foundUser) {
+            console.log("User with ID: " + req.body.id + " not found.");
+            res.status(404).send("404!!!!");
+        } else {
+            res.status(200).render("users/edit", {
+                user: foundUser
+            });
+        }
+    }).catch((error) => {
+        //we can use flash to show the error!!!
+        res.status(500).send(error);
+    });
+});
+
+//Users Update
+router.put("/:id", function (req, res) {
+    User.findById(req.params.id).then((userToUpdate) => {
+        if (!userToUpdate) {
+            console.log("User with ID: " + req.body.id + " not found.");
+            res.status(404).send("404!!!! User not found");
+        } else {
+            userToUpdate.firstName = req.body.inputFirstName;
+            userToUpdate.lastName = req.body.inputLastName;
+            userToUpdate.username = req.body.inputUsername;
+            userToUpdate.email = req.body.inputEmail;
+            userToUpdate.isAdmin = req.body.inputIsAdmin === "on";
+            userToUpdate.isActive = req.body.inputIsActive === "on";
+            userToUpdate.save();
+            res.status(200);
+            res.redirect("/users");
+        }
+    }).catch((error) => {
+        //we can use flash to show the error!!!
+        res.status(500).send(error);
+    });
+});
+
+//Users Destroy (deactivate)
+router.delete("/:id", function (req, res) {
+    User.findById(req.params.id).then((userToUpdate) => {
+        if (!userToUpdate) {
+            console.log("User with ID: " + req.body.id + " not found.");
+            res.status(404).send("404!!!! User not found");
+        } else {
+            userToUpdate.isAdmin = req.body.inputIsAdmin === "off";
+            userToUpdate.isActive = req.body.inputIsActive === "off";
+            userToUpdate.save();
+            res.status(200);
+            res.redirect("/users");
+        }
+    }).catch((error) => {
+        //we can use flash to show the error!!!
         res.status(500).send(error);
     });
 });
