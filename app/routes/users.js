@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var passport = require("passport");
 const User = require("../models/user");
 
 //Users Index
@@ -38,13 +39,25 @@ router.post("/", function (req, res, next) {
     }).then(user => {
         console.log(user.get({
             plain: true
-        }))
-        res.redirect("/users");
+        }));
+        //when user was created we have to log him/her in
+        console.log(user.id);
+        req.login(user.id, function (error) {
+            res.redirect("/");
+        });
     }).catch((error) => {
         //we can use flash to show the error!!!
         console.log(error);
         res.status(500).send(error);
     });
+});
+
+passport.serializeUser(function (user_id, done) {
+    done(null, user_id);
+});
+
+passport.deserializeUser(function (user_id, done) {
+    done(null, user_id);
 });
 
 //Users Show

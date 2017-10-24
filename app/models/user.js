@@ -46,7 +46,7 @@ const User = db.define('user', {
             console.log("BeforeValidate FROM MODELS/USER");
         },
         afterValidate: function (user) {
-            user.password = bcrypt.hashSync(user.password, 8);
+            user.password = bcrypt.hashSync(user.password, 10);
         },
         beforeCreate: function () {
             console.log("BeforeCreate");
