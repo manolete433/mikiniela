@@ -9,8 +9,11 @@ var methodOverride = require("method-override");
 
 //Auth packages
 var session = require("express-session");
-var passport = require ("passport");
+var passport = require("passport");
+var LocalStrategy = require('passport-local').Strategy;
 var MySQLStore = require('express-mysql-session')(session);
+const User = require("./app/models/user");
+var bcrypt = require("bcryptjs");
 
 var app = express();
 
@@ -43,12 +46,42 @@ app.use(session({
     store: sessionStore,
     saveUninitialized: false,
     // cookie: { secure: true }
-  }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', index);
 app.use('/users', userRoutes);
+
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        User.findAll({
+            where: {
+                username: username
+            }
+        }).then(foundUser => {
+            if (foundUser.length === 0) {
+                return done(null, false);
+            } else {
+                const hashedPassword = foundUser[0].password.toString();
+                bcrypt.compare(password, hashedPassword, function (error, response) {
+                    if (response === true) {
+                        console.log(foundUser[0].id);
+                        return done(null, {
+                            user_id: foundUser[0].id
+                        });
+                    } else {
+                        console.log(foundUser[0].username + " didn't enter the right password")
+                        return done(null, false);
+                    }
+                });
+            }
+        }).catch((error) => {
+            //we can use flash to show the error!!!
+            res.status(500).send(error);
+        });
+    }
+));
 
 app.listen(process.env.PORT || 3000, process.env.IP, function () {
     console.log("MK Server has started");

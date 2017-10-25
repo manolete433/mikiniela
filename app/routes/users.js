@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+//has to be removed once I create my middleware file
 var passport = require("passport");
 const User = require("../models/user");
 
@@ -61,7 +62,7 @@ passport.deserializeUser(function (user_id, done) {
 });
 
 //Users Show
-router.get("/:id", function (req, res) {
+router.get("/:id", authenticationMiddleware(), function (req, res) {
     User.findById(req.params.id).then((foundUser) => {
         if (!foundUser) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -135,5 +136,14 @@ router.delete("/:id", function (req, res) {
         res.status(500).send(error);
     });
 });
+
+function authenticationMiddleware() {
+    return (req, res, next) => {
+        console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+
+        if (req.isAuthenticated()) return next();
+        res.redirect('/login')
+    }
+};
 
 module.exports = router;

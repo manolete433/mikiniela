@@ -2,6 +2,7 @@ var Sequelize = require("sequelize");
 const db = require('./db');
 var bcrypt = require("bcryptjs");
 
+
 const User = db.define('user', {
     // slug:{
     //     type: Sequelize.STRING,
