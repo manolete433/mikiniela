@@ -20,4 +20,12 @@ router.post("/login", passport.authenticate('local', {
     failureRedirect: 'back'
 }));
 
+//show logout form
+router.get("/logout", function (req, res) {
+    req.logout();
+    req.session.destroy();
+    res.redirect("/");
+    // res.render("login", {message: "asdfasdfasdf"});
+});
+
 module.exports = router;
