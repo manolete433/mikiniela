@@ -29,7 +29,6 @@ app.use(bodyParser.json());
 // app.use(expressValidator());
 app.use(cookieParser());
 
-
 //To Store Auth session in the DB
 var options = {
     host: process.env.DB_HOST,

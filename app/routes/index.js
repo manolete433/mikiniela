@@ -5,7 +5,6 @@ var passport = require("passport");
 //root route
 router.get("/", function (req, res, next) {
     console.log(req.user);
-    console.log(req.isAuthenticated());
     res.render("landing");
 });
 
