@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('dotenv').load();
 var methodOverride = require("method-override");
+var flash = require("connect-flash");
 
 //show the username instead of LOGIN
 
@@ -39,11 +40,12 @@ var options = {
 var sessionStore = new MySQLStore(options);
 
 app.use(methodOverride("_method"));
+app.use(flash());
 
 app.use(session({
     secret: 'ajskdflasdjfladf',
     resave: false,
-    store: sessionStore,
+    // store: sessionStore,
     saveUninitialized: false,
     // cookie: { secure: true }
 }));
@@ -55,6 +57,8 @@ app.use(function(req, res, next){
     res.locals.isAuthenticated = req.isAuthenticated();
     //if user is loggedIn we should pass it to all the requests
     if(req.isAuthenticated()) res.locals.currentUser = req.user.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

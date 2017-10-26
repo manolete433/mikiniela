@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
+var middleware = require("../middleware");
 
 //root route
 router.get("/", function (req, res, next) {
@@ -9,21 +10,23 @@ router.get("/", function (req, res, next) {
 
 //show login form
 router.get("/login", function (req, res) {
-    res.render("login");
-    // res.render("login", {message: "asdfasdfasdf"});
+    if (req.isAuthenticated()) {
+        res.redirect("/users");
+    } else {
+        res.render("login");
+    }
 });
 
 router.post("/login", passport.authenticate('local', {
     successRedirect: '/users',
     failureRedirect: 'back'
-}));
+}), function (req, res) {});
 
 //show logout form
-router.get("/logout", function (req, res) {
+router.get("/logout", middleware.isLoggedIn, function (req, res) {
     req.logout();
     req.session.destroy();
-    res.redirect("/");
-    // res.render("login", {message: "asdfasdfasdf"});
+    res.redirect("/login");
 });
 
 module.exports = router;
