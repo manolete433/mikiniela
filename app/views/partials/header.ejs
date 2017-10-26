@@ -24,7 +24,8 @@
                         <a href="/login">Login</a>
                     </li>
                     <% } else { %>
-                    <li>
+                    <li><%= currentUser.username %></li>
+                        <li>
                         <a href="/logout">Logout</a>
                     </li>
                     <% } %>

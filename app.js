@@ -1,7 +1,6 @@
 var express = require("express");
 var index = require('./app/routes/index');
 var userRoutes = require('./app/routes/users');
-var login = require('./app/routes/loginroutes');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('dotenv').load();
@@ -52,7 +51,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next){
+    console.log("req.isAuthenticated() " + req.isAuthenticated());
     res.locals.isAuthenticated = req.isAuthenticated();
+    //if user is loggedIn we should pass it to all the requests
+    if(req.isAuthenticated()) res.locals.currentUser = req.user.user;
     next();
 });
 
@@ -72,7 +74,6 @@ passport.use(new LocalStrategy(
                 const hashedPassword = foundUser[0].password.toString();
                 bcrypt.compare(password, hashedPassword, function (error, response) {
                     if (response === true) {
-                        console.log(foundUser[0].id);
                         return done(null, {
                             user: foundUser[0]
                         });
