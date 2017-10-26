@@ -3,9 +3,10 @@ var router = express.Router();
 //has to be removed once I create my middleware file
 var passport = require("passport");
 const User = require("../models/user");
+var middleware = require("../middleware");
 
 //Users Index
-router.get("/", function (req, res, next) {
+router.get("/", middleware.isLoggedIn, function (req, res, next) {
     User.findAll({
         order: [
             ['createdAt', 'ASC']
@@ -20,7 +21,7 @@ router.get("/", function (req, res, next) {
 });
 
 //Users New
-router.get("/new", function (req, res, next) {
+router.get("/new", middleware.isLoggedIn, function (req, res, next) {
     // res.render("users/new", {success: req.session.success, errors: req.session.errors});
     res.render("users/new");
     // req.session.errors = null;
@@ -28,7 +29,7 @@ router.get("/new", function (req, res, next) {
 });
 
 //Users Create
-router.post("/", function (req, res, next) {
+router.post("/", middleware.isLoggedIn, function (req, res, next) {
     User.create({
         firstName: req.body.inputFirstName,
         lastName: req.body.inputLastName,
@@ -62,7 +63,7 @@ passport.deserializeUser(function (user_id, done) {
 });
 
 //Users Show
-router.get("/:id", authenticationMiddleware(), function (req, res) {
+router.get("/:id", middleware.isLoggedIn, function (req, res) {
     User.findById(req.params.id).then((foundUser) => {
         if (!foundUser) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -79,7 +80,7 @@ router.get("/:id", authenticationMiddleware(), function (req, res) {
 });
 
 // Users Edit
-router.get("/:id/edit", function (req, res) {
+router.get("/:id/edit", middleware.isLoggedIn, function (req, res) {
     User.findById(req.params.id).then((foundUser) => {
         if (!foundUser) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -96,7 +97,7 @@ router.get("/:id/edit", function (req, res) {
 });
 
 //Users Update
-router.put("/:id", function (req, res) {
+router.put("/:id", middleware.isLoggedIn, function (req, res) {
     User.findById(req.params.id).then((userToUpdate) => {
         if (!userToUpdate) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -119,7 +120,7 @@ router.put("/:id", function (req, res) {
 });
 
 //Users Destroy (deactivate)
-router.delete("/:id", function (req, res) {
+router.delete("/:id", middleware.isLoggedIn, function (req, res) {
     User.findById(req.params.id).then((userToUpdate) => {
         if (!userToUpdate) {
             console.log("User with ID: " + req.body.id + " not found.");
@@ -136,15 +137,5 @@ router.delete("/:id", function (req, res) {
         res.status(500).send(error);
     });
 });
-
-function authenticationMiddleware() {
-    return (req, res, next) => {
-        console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
-
-        if (req.isAuthenticated()) return next();
-        //can use flash
-        res.redirect('/login')
-    }
-};
 
 module.exports = router;

@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 require('dotenv').load();
 var methodOverride = require("method-override");
 
+//show the username instead of LOGIN
+
 //Auth packages
 var session = require("express-session");
 var passport = require("passport");
@@ -55,7 +57,7 @@ app.use(function(req, res, next){
     next();
 });
 
-app.use('/', index);
+app.use('/', index); 
 app.use('/users', userRoutes);
 
 passport.use(new LocalStrategy(
@@ -73,7 +75,7 @@ passport.use(new LocalStrategy(
                     if (response === true) {
                         console.log(foundUser[0].id);
                         return done(null, {
-                            user_id: foundUser[0].id
+                            user: foundUser[0]
                         });
                     } else {
                         console.log(foundUser[0].username + " didn't enter the right password")
