@@ -50,44 +50,47 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     console.log("req.isAuthenticated() " + req.isAuthenticated());
     res.locals.isAuthenticated = req.isAuthenticated();
     //if user is loggedIn we should pass it to all the requests
-    if(req.isAuthenticated()) res.locals.currentUser = req.user.user;
+    if (req.isAuthenticated()) res.locals.currentUser = req.user.user;
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
     next();
 });
 
-app.use('/', index); 
+app.use('/', index);
 app.use('/users', userRoutes);
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy({
+        usernameField: "inputEmail",
+        passwordField: "inputPassword"
+    },
     function (email, password, done) {
-        User.findAll({
+        User.findOne({
             where: {
                 email: email
             }
         }).then(foundUser => {
-            if (foundUser.length === 0) {
+            if (!foundUser) {
                 return done(null, false);
             } else {
-                const hashedPassword = foundUser[0].password.toString();
+                const hashedPassword = foundUser.password.toString();
                 bcrypt.compare(password, hashedPassword, function (error, response) {
                     if (response === true) {
                         return done(null, {
-                            user: foundUser[0]
+                            user: foundUser
                         });
                     } else {
-                        console.log(foundUser[0].username + " didn't enter the right password")
+                        console.log(foundUser.username + " didn't enter the right password")
                         return done(null, false);
                     }
                 });
             }
         }).catch((error) => {
-            //we can use flash to show the error!!!
-            res.status(500).send(error);
+            console.log(error.message);
+            // res.status(500).send(error);
         });
     }
 ));

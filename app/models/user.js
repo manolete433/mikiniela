@@ -44,16 +44,16 @@ const User = db.define('user', {
 }, {
     hooks: {
         beforeValidate: function () {
-            console.log("BeforeValidate FROM MODELS/USER");
+            // console.log("BeforeValidate FROM MODELS/USER");
         },
         afterValidate: function (user) {
             user.password = bcrypt.hashSync(user.password, 10);
         },
         beforeCreate: function () {
-            console.log("BeforeCreate");
+            // console.log("BeforeCreate");
         },
         afterCreate: function (res) {
-            console.log("AfterCreate: Created User with email + ", res.dataValues.email);
+            // console.log("AfterCreate: Created User with email + ", res.dataValues.email);
         }
     }
 });
