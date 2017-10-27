@@ -7,13 +7,11 @@ require('dotenv').load();
 var methodOverride = require("method-override");
 var flash = require("connect-flash");
 
-//show the username instead of LOGIN
-
 //Auth packages
 var session = require("express-session");
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
-var MySQLStore = require('express-mysql-session')(session);
+// var MySQLStore = require('express-mysql-session')(session);
 const User = require("./app/models/user");
 var bcrypt = require("bcryptjs");
 
@@ -30,14 +28,14 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 //To Store Auth session in the DB
-var options = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-};
+// var options = {
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME
+// };
 
-var sessionStore = new MySQLStore(options);
+// var sessionStore = new MySQLStore(options);
 
 app.use(methodOverride("_method"));
 app.use(flash());
@@ -66,10 +64,10 @@ app.use('/', index);
 app.use('/users', userRoutes);
 
 passport.use(new LocalStrategy(
-    function (username, password, done) {
+    function (email, password, done) {
         User.findAll({
             where: {
-                username: username
+                email: email
             }
         }).then(foundUser => {
             if (foundUser.length === 0) {
