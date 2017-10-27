@@ -25,7 +25,8 @@ router.post("/login", passport.authenticate('local', {
 //show logout form
 router.get("/logout", middleware.isLoggedIn, function (req, res) {
     req.logout();
-    req.session.destroy();
+    // req.session.destroy();
+    req.flash("success", "Logged out");
     res.redirect("/login");
 });
 
