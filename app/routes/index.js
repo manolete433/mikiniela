@@ -18,10 +18,26 @@ router.get("/login", function (req, res) {
 });
 
 //post login
-router.post("/login", passport.authenticate('local', {
-    successRedirect: '/users',
-    failureRedirect: 'back'
-}), function (req, res) {});
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (error, user, info) {
+        if (error) {
+            req.flash("error", error)
+            return next(error);
+        }
+        // Redirect if it fails
+        if (!user) {
+            req.flash("error", "Email or password didn't match our records");
+            return res.redirect('/login');
+        }
+        req.logIn(user, function (error) {
+            if (error) {
+                return next(error);
+            }
+            req.flash("success", "Welcome Back, " + user.user.username + "!");
+            return res.redirect('/users');
+        });
+    })(req, res, next);
+});
 
 //show logout form
 router.get("/logout", middleware.isLoggedIn, function (req, res) {
