@@ -1,6 +1,7 @@
 var express = require("express");
 var index = require('./app/routes/index');
 var userRoutes = require('./app/routes/users');
+var teamRoutes = require('./app/routes/teams');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('dotenv').load();
@@ -62,6 +63,7 @@ app.use(function (req, res, next) {
 
 app.use('/', index);
 app.use('/users', userRoutes);
+app.use('/teams', teamRoutes);
 
 passport.use(new LocalStrategy({
         usernameField: "inputEmail",

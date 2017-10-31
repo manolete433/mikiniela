@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1>This is the index of Teams!</h1>
+            <% teams.forEach(function(team){ %>
+                <div class="col-md-3 col-sm-6">
+                    <h4>
+                        <a href="/teams/<%= team.id %>">
+                            <%= team.name %>
+                        </a>
+                    </h4>
+                </div>
+                <% }) %>
+        </div>
+        <div class="row">
+            <a href="/teams/new">Add a New Team</a>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

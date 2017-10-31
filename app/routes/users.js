@@ -124,8 +124,27 @@ router.delete("/:id", middleware.isLoggedIn, function (req, res) {
             console.log("User with ID: " + req.body.id + " not found.");
             res.status(404).send("404!!!! User not found");
         } else {
-            userToUpdate.isAdmin = req.body.inputIsAdmin === "off";
-            userToUpdate.isActive = req.body.inputIsActive === "off";
+            // userToUpdate.isAdmin = req.body.inputIsAdmin === "off";
+            userToUpdate.isActive = 0;
+            userToUpdate.save();
+            res.status(200);
+            res.redirect("/users");
+        }
+    }).catch((error) => {
+        //we can use flash to show the error!!!
+        res.status(500).send(error);
+    });
+});
+
+//Users Reactivate
+router.post("/:id/activate", middleware.isLoggedIn, function(req, res){
+    User.findById(req.params.id).then((userToUpdate) => {
+        if (!userToUpdate) {
+            console.log("User with ID: " + req.body.id + " not found.");
+            res.status(404).send("404!!!! User not found");
+        } else {
+            // userToUpdate.isAdmin = req.body.inputIsAdmin === "off";
+            userToUpdate.isActive = 1;
             userToUpdate.save();
             res.status(200);
             res.redirect("/users");

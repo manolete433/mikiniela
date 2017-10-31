@@ -10,7 +10,7 @@
     padding: 9px;
 }
 
-.delete-form{
+.update-form {
     display: inline;
 }
 
@@ -21,19 +21,33 @@
     min-width: 200px;
     display: inline-block;
     border: 1px solid #e74c3c;
-  }
-  
-  .errors ul {
+}
+
+.errors ul {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-  
-  .success {
+}
+
+.success {
     background: #80cca0;
     padding: 5px;
-  }
+}
 
-  .error {
+.error {
     color: #b94a48;
+}
+
+.logo-div {
+    position: relative;
+    height:150px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.show-team-logo{
+    width: 150px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
 }
