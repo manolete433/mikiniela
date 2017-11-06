@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1 style="text-align: center;">
+                <div>
+                    <%= game.homeTeam %> VS <%= game.awayTeam  %>
+                </div>
+                <div>
+                    <%= game.gameDate %>
+                </div>
+            </h1>
+            <div class="row">
+                <!-- Only if admin -->
+                <div style="text-align: center;">
+                    <!-- Below line is causing issues -->
+                    <a class="btn btn-md btn-warning" href="/games/<%= game.id %>/edit">Edit</a>
+                    <form class="update-form" action="/games/<%= game.id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-md btn-danger">Delete</button>
+                    </form>
+                    <!-- Only if admin -->
+                    <div>
+                        <a href="/games">Go Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

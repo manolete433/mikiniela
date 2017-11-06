@@ -107,6 +107,7 @@ router.put("/:id", middleware.isLoggedIn, function (req, res) {
             userToUpdate.isAdmin = req.body.inputIsAdmin === "on";
             userToUpdate.isActive = req.body.inputIsActive === "on";
             userToUpdate.save();
+            req.flash("success", "User " + userToUpdate.email + " was updated!");
             res.status(200);
             res.redirect("/users");
         }

@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="/javascripts/createGameFormValidation.js" type="text/javascript"></script>
+
+    <div class="container">
+        <div class="row">
+            <h1 style="text-align: center;">Add Game</h1>
+            <div class="row">
+                <div style="width: 50%; margin: 25px auto;">
+                    <form action="/games" method="POST" data-toggle="validator" name="createGameForm" id="createGameForm">
+                        <div class="form-group control-group">
+                            <div class="form-inline row" style="text-align: center;">
+                                <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
+                                <select class="form-control" name="selectHomeTeam" required>
+                                    <option value selected>Select the Home Team</option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <span> VS </span>
+                                <!-- <span for="selectAwayTeam" class="control-label">Away: </span> -->
+                                <select class="form-control" name="selectAwayTeam" required>
+                                    <option value selected>Select the Away Team</option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <input type="date" name="inputGameDate" min="<%= Date() %>" required>
+                            </div>
+                        </div>
+                        <div class="form-group control-group">
+                            <button class="btn btn-large btn-primary btn-block" type="Submit">Submit</button>
+                        </div>
+                    </form>
+                    <a href="/games">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

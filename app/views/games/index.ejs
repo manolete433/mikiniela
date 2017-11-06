@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1>This is the index of Games!</h1>
+            <% games.forEach(function(game){ %>
+                <div class="col-md-3 col-sm-6">
+                    <h4>
+                        <a href="/games/<%= game.id %>">
+                            <%= game.homeTeamName %> vs <%= game.awayTeamName %> on <%= game.gameDate %>
+                        </a>
+                    </h4>
+                </div>
+                <% }) %>
+        </div>
+        <div class="row">
+            <a href="/games/new">Add a New Game</a>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>
