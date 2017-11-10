@@ -1,48 +1,59 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
+
 const Game = require("../models/game");
 const Team = require("../models/team");
 var middleware = require("../middleware");
 
 //Games Index
 router.get("/", middleware.isLoggedIn, function (req, res, next) {
-    Game.findAll({
-        order: [
-            ['id', 'ASC']
-        ]
-    }).then((foundGames) => {
-        const games = {
-            game: []
-        };
+    // var aaaaa;
+    // Game.findAll({
+    //     // include: [Team]
+    // }).then((foundGames) => { 
+    //     aaaaa = foundGames;
+    //     console.log(aaaaa);
+    //     res.status(200).render("games/index", {
+    //         games: games
+    //     });
+    // }).catch((error) => {
+    //     res.status(500).send(error);
+    // });
+    Game.findAll({}).then((foundGames) => {
+        var games = [];
+        var foundGamesLastGameId = foundGames[foundGames.length-1].id;
         foundGames.forEach(function (game) {
             var homeTeamName;
             var awayTeamName;
-            Team.findById(parseInt(game.homeTeam)).then((foundHomeTeam) => {
+            Team.findById(game.homeTeam).then((foundHomeTeam) => {
                 if (!foundHomeTeam) {
                     console.log("Team with ID: " + game.foundHomeTeam + " not found.");
+                    homeTeamName = undefined;
                 } else {
-                    //insert the team.name based on foundTeam
                     homeTeamName = foundHomeTeam.name;
+                    Team.findById(game.awayTeam).then((foundAwayTeam) => {
+                        if (!foundAwayTeam) {
+                            console.log("Team with ID: " + game.foundAwayTeam + " not found.");
+                            homeAwayName = undefined;
+                        } else {
+                            //insert the team.name based on foundTeam
+                            awayTeamName = foundAwayTeam.name;
+                            games.push({
+                                "id": game.id,
+                                "homeTeamName": homeTeamName,
+                                "awayTeamName": awayTeamName,
+                                "gameDate": game.gameDate
+                            });
+                            if(game.id === foundGamesLastGameId){
+                                res.status(200).render("games/index", {
+                                    games: games
+                                });
+                            }
+                        }
+                    });
                 }
             });
-            Team.findById(parseInt(game.homeAway)).then((foundAwayTeam) => {
-                if (!foundAwayTeam) {
-                    console.log("Team with ID: " + game.foundAwayTeam + " not found.");
-                } else {
-                    //insert the team.name based on foundTeam
-                    awayTeamName = foundAwayTeam.name;
-                }
-            });
-            games.game.push({
-                "id": game.id,
-                "homeTeamName": homeTeamName,
-                "awayTeamName": awayTeamName,
-                "gameDate": game.gameDate
-            });
-        });
-        res.status(200).render("games/index", {
-            games: games
         });
     }).catch((error) => {
         res.status(500).send(error);
@@ -175,5 +186,28 @@ router.delete("/:id", middleware.isLoggedIn, function (req, res) {
         res.status(500).send(error);
     });
 });
+
+// var getNameById = deasync(function(teamId){
+//     // return the promise itself
+//     return Team.findById(teamId).then(function(foundTeam) {
+//         if (!foundTeam) {
+//             return undefined;
+//         }
+//         return foundTeam.dataValues;
+//      });
+// });
+
+// let getNameById = function (gameId) {
+//     Team.findById(gameId).then((foundTeam) => {
+//         if (!foundTeam) {
+//             console.log("Team with ID: " + game.gameId + " not found.");
+//             return undefined;
+//         } else {
+//             //insert the team.name based on foundTeam
+//             // homeTeamName = foundHomeTeam.name;
+//             return foundTeam.name;
+//         }
+//     });
+// };
 
 module.exports = router;

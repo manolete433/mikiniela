@@ -1,11 +1,8 @@
 var Sequelize = require("sequelize");
+const Game = require("./game");
 const db = require('./db');
 
 const Team = db.define('team', {
-    // slug:{
-    //     type: Sequelize.STRING,
-    //     primaryKey: true
-    // },
     name: {
         type: Sequelize.STRING,
         unique: true,
@@ -19,7 +16,8 @@ const Team = db.define('team', {
         type: Sequelize.BOOLEAN,
         defaultValue: 1
     }
-}, {
+},
+ {
     hooks: {
         beforeValidate: function () {
             // console.log("BeforeValidate FROM MODELS/USER");
@@ -35,5 +33,8 @@ const Team = db.define('team', {
         }
     }
 });
+
+// Team.belongsToMany(Game, {foreignKey:"id"});
+// Team.belongsToMany(Game, {foreignKey:"id"});
 
 module.exports = Team;

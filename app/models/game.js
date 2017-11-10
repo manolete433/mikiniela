@@ -3,10 +3,6 @@ const Team = require("./team");
 const db = require('./db');
 
 const Game = db.define('game', {
-    // slug:{
-    //     type: Sequelize.STRING,
-    //     primaryKey: true
-    // },
     homeTeam: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -23,7 +19,7 @@ const Game = db.define('game', {
         type: Sequelize.INTEGER,
         defaultValue: null
     },
-    gameDate:{
+    gameDate: {
         type: Sequelize.DATEONLY,
         allowNull: false
     }
@@ -44,7 +40,7 @@ const Game = db.define('game', {
     }
 });
 
-Game.hasMany(Team, {foreignKey: "id", sourceKey: "homeTeam"});
-Game.hasMany(Team, {foreignKey: "id", sourceKey: "awayteam"});
+// Game.hasOne(Team, {foreignKey: "id", sourceKey: "homeTeam"});
+// Game.hasOne(Team, {foreignKey: "id", sourceKey: "awayteam"});
 
-module.exports = Game;  
+module.exports = Game;
