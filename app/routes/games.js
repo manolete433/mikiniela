@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-
 const Game = require("../models/game");
 const Team = require("../models/team");
 var middleware = require("../middleware");
@@ -22,10 +21,8 @@ router.get("/", middleware.isLoggedIn, function (req, res, next) {
     // });
     Game.findAll({}).then((foundGames) => {
         var games = [];
-        var foundGamesLastGameId = foundGames[foundGames.length-1].id;
+        var foundGamesLastGameId = foundGames[foundGames.length - 1].id;
         foundGames.forEach(function (game) {
-            var homeTeamName;
-            var awayTeamName;
             Team.findById(game.homeTeam).then((foundHomeTeam) => {
                 if (!foundHomeTeam) {
                     console.log("Team with ID: " + game.foundHomeTeam + " not found.");
@@ -45,7 +42,7 @@ router.get("/", middleware.isLoggedIn, function (req, res, next) {
                                 "awayTeamName": awayTeamName,
                                 "gameDate": game.gameDate
                             });
-                            if(game.id === foundGamesLastGameId){
+                            if (game.id === foundGamesLastGameId) {
                                 res.status(200).render("games/index", {
                                     games: games
                                 });
@@ -86,9 +83,27 @@ router.post("/", middleware.isLoggedIn, function (req, res, next) {
         console.log(createdGame.get({
             plain: true
         }));
-        req.flash("success", "Game " + createdGame.homeTeam + " VS " + createdGame.awayTeam + " was successfully created!");
-        console.log("/games Create " + createdGame.id);
-        res.redirect("/games");
+        var homeTeamName;
+        var awayTeamName;
+        Team.findById(createdGame.homeTeam).then((foundHomeTeam) => {
+            if (!foundHomeTeam) {
+                console.log("Team with ID: " + createdGame.foundHomeTeam + " not found.");
+                homeTeamName = undefined;
+            } else {
+                homeTeamName = foundHomeTeam.name;
+                Team.findById(createdGame.awayTeam).then((foundAwayTeam) => {
+                    if (!foundAwayTeam) {
+                        console.log("Team with ID: " + game.foundAwayTeam + " not found.");
+                        homeAwayName = undefined;
+                    } else {
+                        awayTeamName = foundAwayTeam.name;
+                        req.flash("success", "Game " + homeTeamName + " VS " + awayTeamName + " was successfully created!");
+                        console.log("/games Create " + createdGame.id);
+                        res.redirect("/games");
+                    }
+                });
+            }
+        });
     }).catch((error) => {
         //we can use flash to show the error!!!
         req.flash("error", error.message);
@@ -106,8 +121,26 @@ router.get("/:id", middleware.isLoggedIn, function (req, res) {
             console.log("Game with ID: " + req.body.id + " not found.");
             res.status(404).send("404!!!!");
         } else {
-            res.status(200).render("games/show", {
-                game: foundGame
+            var homeTeamName;
+            var awayTeamName;
+            Team.findById(createdGame.homeTeam).then((foundHomeTeam) => {
+                if (!foundHomeTeam) {
+                    console.log("Team with ID: " + createdGame.foundHomeTeam + " not found.");
+                    homeTeamName = undefined;
+                } else {
+                    homeTeamName = foundHomeTeam.name;
+                    Team.findById(createdGame.awayTeam).then((foundAwayTeam) => {
+                        if (!foundAwayTeam) {
+                            console.log("Team with ID: " + game.foundAwayTeam + " not found.");
+                            homeAwayName = undefined;
+                        } else {
+                            awayTeamName = foundAwayTeam.name;
+                            res.status(200).render("games/show", {
+                                game: foundGame
+                            });
+                        }
+                    });
+                }
             });
         }
     }).catch((error) => {
@@ -196,6 +229,23 @@ router.delete("/:id", middleware.isLoggedIn, function (req, res) {
 //         return foundTeam.dataValues;
 //      });
 // });
+
+async function getTeamNameById(teamId) {
+    await Team.findById(teamId).then((foundTeam) => {
+        if (!foundTeam) {
+            console.log("Team with ID '" + teamId + "' wasn't found");
+            return undefined;
+        }
+        return foundTeam.name;
+    });
+    // try {
+    //     let team = await Team.findById(teamId);
+    //     return team.name;
+    // } catch (err) {
+    //     console.log(err);
+    //     return undefined;
+    // }
+};
 
 // let getNameById = function (gameId) {
 //     Team.findById(gameId).then((foundTeam) => {
