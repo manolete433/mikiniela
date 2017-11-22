@@ -7,50 +7,29 @@ var middleware = require("../middleware");
 
 //Games Index
 router.get("/", middleware.isLoggedIn, function (req, res, next) {
-    // var aaaaa;
-    // Game.findAll({
-    //     // include: [Team]
-    // }).then((foundGames) => { 
-    //     aaaaa = foundGames;
-    //     console.log(aaaaa);
-    //     res.status(200).render("games/index", {
-    //         games: games
-    //     });
-    // }).catch((error) => {
-    //     res.status(500).send(error);
-    // });
-    Game.findAll({}).then((foundGames) => {
-        var games = [];
-        var foundGamesLastGameId = foundGames[foundGames.length - 1].id;
+    var games = []; //to be sent to our index.ejs
+    Game.findAll({
+        include: [{
+                model: Team,
+                as: 'awayTeam'
+            },
+            {
+                model: Team,
+                as: 'homeTeam'
+            }
+        ]
+    }).then((foundGames) => {
         foundGames.forEach(function (game) {
-            Team.findById(game.homeTeam).then((foundHomeTeam) => {
-                if (!foundHomeTeam) {
-                    console.log("Team with ID: " + game.foundHomeTeam + " not found.");
-                    homeTeamName = undefined;
-                } else {
-                    homeTeamName = foundHomeTeam.name;
-                    Team.findById(game.awayTeam).then((foundAwayTeam) => {
-                        if (!foundAwayTeam) {
-                            console.log("Team with ID: " + game.foundAwayTeam + " not found.");
-                            homeAwayName = undefined;
-                        } else {
-                            //insert the team.name based on foundTeam
-                            awayTeamName = foundAwayTeam.name;
-                            games.push({
-                                "id": game.id,
-                                "homeTeamName": homeTeamName,
-                                "awayTeamName": awayTeamName,
-                                "gameDate": game.gameDate
-                            });
-                            if (game.id === foundGamesLastGameId) {
-                                res.status(200).render("games/index", {
-                                    games: games
-                                });
-                            }
-                        }
-                    });
-                }
+            games.push({
+                'id': game.id,
+                'homeTeamName': game.homeTeam.name,
+                'awayTeamName': game.awayTeam.name,
+                'gameDate': game.gameDate
             });
+        });
+    }).then(() => {
+        res.status(200).render("games/index", {
+            games: games
         });
     }).catch((error) => {
         res.status(500).send(error);

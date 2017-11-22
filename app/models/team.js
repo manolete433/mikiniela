@@ -1,40 +1,30 @@
-var Sequelize = require("sequelize");
-const Game = require("./game");
-const db = require('./db');
+const Sequelize = require('sequelize')
+const Game = require('./game');
+const db = require('./_db')
 
 const Team = db.define('team', {
-    name: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false
-    },
-    imageURL: {
-        type: Sequelize.STRING,
-        unique: true,
-    },
-    isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: 1
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
     }
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    unique: true,
+    validate: {
+      isUrl: true,
+    }
+  }
 },
- {
-    hooks: {
-        beforeValidate: function () {
-            // console.log("BeforeValidate FROM MODELS/USER");
-        },
-        afterValidate: function (user) {
-            // user.password = bcrypt.hashSync(user.password, 10);
-        },
-        beforeCreate: function () {
-            // console.log("BeforeCreate");
-        },
-        afterCreate: function (res) {
-            // console.log("AfterCreate: Created User with email + ", res.dataValues.email);
-        }
-    }
-});
+{
+  tableName: 'teams',
+  name: { singular: 'team', plural: 'teams' },
 
-// Team.belongsToMany(Game, {foreignKey:"id"});
-// Team.belongsToMany(Game, {foreignKey:"id"});
+})
 
-module.exports = Team;
+Game.belongsTo(Team, {as: 'homeTeam', foreignKey: 'homeTeamId', targetKey: 'id'});
+Game.belongsTo(Team, {as: 'awayTeam', foreignKey: 'awayTeamId', targetKey: 'id'});
+
+module.exports = Team
