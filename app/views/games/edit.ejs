@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">Add Game</h1>
+        <h1 style="text-align: center;">Edit Game</h1>
         <div class="row">
             <div style="width: 50%; margin: 25px auto;">
                 <form action="/games/<%= game.id %>?_method=PUT" method="POST" data-toggle="validator" name="createGameForm" id="createGameForm">
@@ -14,7 +14,7 @@
                             <select class="form-control" name="selectHomeTeam" required>
                                 <option value>Select the Home Team</option>
                                 <% teams.forEach(function(team){ %>
-                                    <% if(team.id === game.homeTeam) { %>
+                                    <% if(team.id === game.homeTeam.id) { %>
                                         <option value="<%= team.id %>" selected>
                                                 <%= team.name %>
                                         </option>
@@ -30,7 +30,7 @@
                             <select class="form-control" name="selectAwayTeam" required>
                                 <option value selected>Select the Away Team</option>
                                 <% teams.forEach(function(team){ %>
-                                    <% if(team.id === game.awayTeam) { %>
+                                    <% if(team.id === game.awayTeam.id) { %>
                                         <option value="<%= team.id %>" selected>
                                                 <%= team.name %>
                                         </option>

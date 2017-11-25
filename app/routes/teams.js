@@ -25,15 +25,13 @@ router.get("/new", middleware.isLoggedIn, function (req, res, next) {
 });
 
 //Teams Create
+//CONTINUE HERE!!!!!!!!!!!
 router.post("/", middleware.isLoggedIn, function (req, res, next) {
+    console.log("console.log(req.body.inputImageURL);" + req.body.inputImageURL);
     Team.create({
         name: req.body.inputName,
-        imageURL: req.body.inputImageURL,
-        isActive: req.body.inputIsActive === "on"
+        imageURL: req.body.inputImageURL
     }).then(createdTeam => {
-        console.log(createdTeam.get({
-            plain: true
-        }));
         req.flash("success", "Team " + createdTeam.name  + " was successfully created!");
         console.log("/Teams Create " + createdTeam.id);
         res.redirect("/teams");
