@@ -6,13 +6,12 @@ const Team = db.define('team', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-    }
+    unique: true
   },
-  imageUrl: {
+  imageURL: {
     type: Sequelize.STRING,
     unique: true,
+    allowNull: false,
     validate: {
       isUrl: true,
     }
@@ -22,7 +21,7 @@ const Team = db.define('team', {
   tableName: 'teams',
   name: { singular: 'team', plural: 'teams' },
 
-})
+});
 
 Game.belongsTo(Team, {as: 'homeTeam', foreignKey: 'homeTeamId', targetKey: 'id'});
 Game.belongsTo(Team, {as: 'awayTeam', foreignKey: 'awayTeamId', targetKey: 'id'});

@@ -25,9 +25,7 @@ router.get("/new", middleware.isLoggedIn, function (req, res, next) {
 });
 
 //Teams Create
-//CONTINUE HERE!!!!!!!!!!!
 router.post("/", middleware.isLoggedIn, function (req, res, next) {
-    console.log("console.log(req.body.inputImageURL);" + req.body.inputImageURL);
     Team.create({
         name: req.body.inputName,
         imageURL: req.body.inputImageURL
@@ -36,12 +34,10 @@ router.post("/", middleware.isLoggedIn, function (req, res, next) {
         console.log("/Teams Create " + createdTeam.id);
         res.redirect("/teams");
     }).catch((error) => {
-        //we can use flash to show the error!!!
         req.flash("error", "Are you sure the name of the team, or the image URL are not linked to an existing team? " + error.message );
         console.log(error);
         res.status(500);
         res.redirect("/teams");
-        // res.status(500).send(error);
     });
 });
 
