@@ -28,13 +28,14 @@ router.get("/new", middleware.isLoggedIn, function (req, res, next) {
 router.post("/", middleware.isLoggedIn, function (req, res, next) {
     Team.create({
         name: req.body.inputName,
-        imageURL: req.body.inputImageURL
+        imageURL: req.body.inputImageURL,
+        isActive: req.body.inputIsActive === "on"
     }).then(createdTeam => {
-        req.flash("success", "Team " + createdTeam.name  + " was successfully created!");
+        req.flash("success", "Team " + createdTeam.name + " was successfully created!");
         console.log("/Teams Create " + createdTeam.id);
         res.redirect("/teams");
     }).catch((error) => {
-        req.flash("error", "Are you sure the name of the team, or the image URL are not linked to an existing team? " + error.message );
+        req.flash("error", "Are you sure the name of the team, or the image URL are not linked to an existing team? " + error.message);
         console.log(error);
         res.status(500);
         res.redirect("/teams");
@@ -53,8 +54,10 @@ router.get("/:id", middleware.isLoggedIn, function (req, res) {
             });
         }
     }).catch((error) => {
-        //we can use flash to show the error!!!
-        res.status(500).send(error);
+        req.flash("error", "What the heck? " + error.message);
+        console.log(error);
+        res.status(500);
+        res.redirect("/teams");
     });
 });
 
@@ -86,7 +89,9 @@ router.put("/:id", middleware.isLoggedIn, function (req, res) {
             teamToUpdate.imageURL = req.body.inputImageURL;
             teamToUpdate.isActive = req.body.inputIsActive === "on";
             teamToUpdate.save();
-            res.status(200);
+            req.flash("success", "Team " + teamToUpdate.name + " successfully updated!");
+            console.log("/Teams Update " + teamToUpdate.id);
+            // res.status(200);
             res.redirect("/teams");
         }
     }).catch((error) => {
@@ -105,8 +110,11 @@ router.delete("/:id", middleware.isLoggedIn, function (req, res) {
         } else {
             teamToUpdate.isActive = 0;
             teamToUpdate.save();
-            res.status(200);
+            req.flash("success", "Team " + teamToUpdate.name + " was deactivated!");
+            //Below line causes issues
+            // res.redirect(200, "/teams");
             res.redirect("/teams");
+
         }
     }).catch((error) => {
         //we can use flash to show the error!!!
@@ -115,7 +123,7 @@ router.delete("/:id", middleware.isLoggedIn, function (req, res) {
 });
 
 //Teams Reactivate
-router.post("/:id/activate", middleware.isLoggedIn, function(req, res){
+router.post("/:id/activate", middleware.isLoggedIn, function (req, res) {
     Team.findById(req.params.id).then((teamToUpdate) => {
         if (!teamToUpdate) {
             console.log("Team with ID: " + req.body.id + " not found.");
@@ -124,7 +132,8 @@ router.post("/:id/activate", middleware.isLoggedIn, function(req, res){
             // userToUpdate.isAdmin = req.body.inputIsAdmin === "off";
             teamToUpdate.isActive = 1;
             teamToUpdate.save();
-            res.status(200);
+            req.flash("success", "Team " + teamToUpdate.name + " was activated!");
+            // res.status(200,"/teams");
             res.redirect("/teams");
         }
     }).catch((error) => {

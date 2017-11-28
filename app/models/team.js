@@ -14,16 +14,30 @@ const Team = db.define('team', {
     allowNull: false,
     validate: {
       isUrl: true,
-    }
+    },
+  },
+  isActive: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: 1
   }
-},
-{
+}, {
   tableName: 'teams',
-  name: { singular: 'team', plural: 'teams' },
+  name: {
+    singular: 'team',
+    plural: 'teams'
+  },
 
 });
 
-Game.belongsTo(Team, {as: 'homeTeam', foreignKey: 'homeTeamId', targetKey: 'id'});
-Game.belongsTo(Team, {as: 'awayTeam', foreignKey: 'awayTeamId', targetKey: 'id'});
+Game.belongsTo(Team, {
+  as: 'homeTeam',
+  foreignKey: 'homeTeamId',
+  targetKey: 'id'
+});
+Game.belongsTo(Team, {
+  as: 'awayTeam',
+  foreignKey: 'awayTeamId',
+  targetKey: 'id'
+});
 
 module.exports = Team
