@@ -1,6 +1,6 @@
 $().ready(function () {
     jQuery.validator.addMethod("lettersonly", function (value, element) {
-        return this.optional(element) || /^[a-z0-9_-]+$/i.test(value);
+        return this.optional(element) || /^[a-z0-9_- ]+$/i.test(value);
     }, "Please use only a-z0-9_-");
     $('#createUserForm').validate({
         rules: {
