@@ -26,7 +26,6 @@ const Team = db.define('team', {
     singular: 'team',
     plural: 'teams'
   },
-
 });
 
 Game.belongsTo(Team, {

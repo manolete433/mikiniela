@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1>This is the index of Weeks!</h1>
+            <% weeks.forEach(function(week){ %>
+                <div class="col-md-3 col-sm-6">
+                    <h4>
+                        <a href="/weeks/<%= week.id %>">
+                            <%= week.name %>
+                        </a>
+                    </h4>
+                </div>
+                <% }) %>
+        </div>
+        <div class="row">
+            <a href="/weeks/new">Add a New Week</a>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

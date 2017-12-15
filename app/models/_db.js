@@ -13,4 +13,14 @@ let db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     dialect: 'mysql'
 });
 
+//To Store Auth session in the DB
+// var options = {
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME
+// };
+
+// var sessionStore = new MySQLStore(options);
+
 module.exports = db;

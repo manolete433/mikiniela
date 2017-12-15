@@ -1,0 +1,64 @@
+<% include ../partials/header %>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <!-- HAVE TO ADD VALIDATION TO THE SELECTS -->
+    <script src="/javascripts/createWeekFormValidation.js" type="text/javascript"></script>
+
+    <div class="container">
+        <div class="row">
+            <h1 style="text-align: center;">Add Week</h1>
+            <div class="row">
+                <div style="width: 50%; margin: 25px auto;">
+                    <form action="/weeks" method="POST" data-toggle="validator" name="createWeekForm" id="createWeekForm">
+                        <div class="form-group control-group">
+                            <label for="inputName" class="control-label">Name: </label>
+                            <input class="form-control" type="text" name="inputName" placeholder="Name" maxlength="15" required>
+                        </div>
+                        <div class="form-group control-group">
+                            <label for="inputStartDate" class="control-label">Start Date: </label>
+                            <input type="date" name="inputStartDate" min="<%= Date() %>" required>
+                        </div>
+                        <div class="form-group control-group">
+                            <label for="inputEndDate" class="control-label">End Date: </label>
+                            <input type="date" name="inputEndDate" min="<%= Date() %>" required>
+                        </div>
+                        <div class="form-group control-group" style="text-align: center;">
+                            <label for="inputIsActive" class="control-label">Active: </label>
+                            <input class="form-control" type="checkbox" name="inputIsActive" checked>
+                        </div>
+                        <!-- Number of games is going to be num of teams/2 -->
+                        <% for(var i = 0; i < (teams.length / 2); i++) { %>
+                            <% var games = [] %>
+                            <div class="form-inline row" style="text-align: center;">
+                                <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
+                                <select class="form-control" name="selectHomeTeam[<%= i %>]" required>
+                                    <option value selected>Select the Home Team</option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <span> VS </span>
+                                <!-- <span for="selectAwayTeam" class="control-label">Away: </span> -->
+                                <select class="form-control" name="selectAwayTeam[<%= i %>]" required>
+                                    <option value selected>Select the Away Team</option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <input type="date" name="inputGameDate[<%= i %>]" min="<%= Date() %>" required>
+                            </div>
+                            <% } %>
+                        <div class="form-group control-group">
+                            <button class="btn btn-large btn-primary btn-block" type="Submit">Submit</button>
+                        </div>
+                    </form>
+                    <a href="/weeks">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

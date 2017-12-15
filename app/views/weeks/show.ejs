@@ -1,0 +1,33 @@
+<% include ../partials/header %>
+    <div class="container">
+        <div class="row">
+            <h1 style="text-align: center;">
+                <%= team.name %>
+            </h1>
+            <div class="row">
+                <div style="width: 30%; margin: 25px auto; text-align: center;"">
+                    <img src="<%= team.imageURL %>" class="show-team-logo">
+                </div>
+                <!-- Only if admin -->
+                <div style="text-align: center;">
+                    <!-- Below line is causing issues -->
+                    <a class="btn btn-md btn-warning" href="/teams/<%= team.id %>/edit">Edit</a>
+                    <% if (team.isActive) { %>
+                    <form class="update-form" action="/teams/<%= team.id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-md btn-danger">Deactivate</button>
+                    </form>
+                    <% } else{ %>
+                        <form class="update-form" action="/teams/<%= team.id %>/activate" method="POST">
+                            <button class="btn btn-md btn-success">Activate</button>
+                        </form>
+                    <% } %>
+                    <!-- Only if admin -->
+                    <div>
+                        <a href="/teams">Go Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

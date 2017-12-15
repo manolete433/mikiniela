@@ -3,6 +3,7 @@ var index = require('./app/routes/index');
 var userRoutes = require('./app/routes/users');
 var teamRoutes = require('./app/routes/teams');
 var gameRoutes = require('./app/routes/games');
+var weekRoutes = require('./app/routes/weeks');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('dotenv').load();
@@ -28,16 +29,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 // app.use(expressValidator());
 app.use(cookieParser());
-
-//To Store Auth session in the DB
-// var options = {
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME
-// };
-
-// var sessionStore = new MySQLStore(options);
 
 app.use(methodOverride("_method"));
 app.use(flash());
@@ -66,6 +57,7 @@ app.use('/', index);
 app.use('/users', userRoutes);
 app.use('/teams', teamRoutes);
 app.use('/games', gameRoutes);
+app.use('/weeks', weekRoutes);
 
 passport.use(new LocalStrategy({
         usernameField: "inputEmail",
