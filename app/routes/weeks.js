@@ -34,32 +34,27 @@ router.get("/new", middleware.isLoggedIn, function (req, res, next) {
 
 //weeks Create
 router.post("/", middleware.isLoggedIn, function (req, res, next) {
-    //have to create the week, then create the games
-    Team.findAll({}).then((foundTeams) => {
-        var totalTeams = foundTeams.length;
-        for (var i = 0; i < (totalTeams / 2); i++) {
-            Game.create({
-                homeTeamId: req.body.selectHomeTeam[i],
-                awayTeamId: req.body.selectAwayTeam[i],
-                gameDate: req.body.inputGameDate[i]
-            }).then(createdGame => {
-                Game.findById(
-                    createdGame.id, {
-                        include: [{
-                                model: Team,
-                                as: 'awayTeam'
-                            },
-                            {
-                                model: Team,
-                                as: 'homeTeam'
-                            }
-                        ]
-                    }).then(foundGame => {
-                    console.log("Game " + foundGame.homeTeam.name + " VS " + foundGame.awayTeam.name + " was successfully created!");
-                    res.redirect("/weeks");
+    Week.create({
+        name: req.body.inputName,
+        startDate: req.body.inputStartDate,
+        endDate: req.body.inputEndDate,
+        isActive: req.body.inputIsActive === "on"
+    }).then(createdWeek => {
+        Team.findAll({}).then((foundTeams) => {
+            var totalTeams = foundTeams.length;
+            for (var i = 0; i < (totalTeams / 2); i++) {
+                Game.create({
+                    homeTeamId: req.body.selectHomeTeam[i],
+                    awayTeamId: req.body.selectAwayTeam[i],
+                    gameDate: req.body.inputGameDate[i],
+                    weekId: createdWeek.id
+                }).catch((error) => {
+                    console.log("Error when trying to create games under a week: " + error);
                 });
-            })
-        };
+            };
+        })
+        req.flash("success", "Week " + createdWeek.name + " was successfully created!");
+        res.redirect("/weeks");
     }).catch((error) => {
         //we can use flash to show the error!!!
         req.flash("error", error.message);
@@ -70,25 +65,21 @@ router.post("/", middleware.isLoggedIn, function (req, res, next) {
     });
 });
 
-//Game Show
+//Week Show CONTINUE HEEEEEERE!!
 router.get("/:id", middleware.isLoggedIn, function (req, res) {
-    Game.findById(req.params.id, {
+    Week.findById(req.params.id, {
         include: [{
-                model: Team,
-                as: 'awayTeam'
-            },
-            {
-                model: Team,
-                as: 'homeTeam'
+                model: Game,
+                as: 'games'
             }
         ]
-    }).then((foundGame) => {
-        if (!foundGame) {
-            console.log("Game with ID: " + req.body.id + " not found.");
+    }).then((foundWeek) => {
+        if (!foundWeek) {
+            console.log("Week with ID: " + req.body.id + " not found.");
             res.status(404).send("404!!!!");
         } else {
-            res.status(200).render("games/show", {
-                game: foundGame
+            res.status(200).render("weeks/show", {
+                week: foundWeek
             });
         }
     }).catch((error) => {

@@ -1,25 +1,31 @@
 <% include ../partials/header %>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-    <!-- HAVE TO ADD VALIDATION TO THE SELECTS -->
     <script src="/javascripts/createWeekFormValidation.js" type="text/javascript"></script>
+    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <link link rel="stylesheet" type="text/css" href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.css"></script>
 
     <div class="container">
         <div class="row">
             <h1 style="text-align: center;">Add Week</h1>
             <div class="row">
-                <div style="width: 50%; margin: 25px auto;">
+                <div style="width: 70%; margin: 25px auto;">
                     <form action="/weeks" method="POST" data-toggle="validator" name="createWeekForm" id="createWeekForm">
                         <div class="form-group control-group">
                             <label for="inputName" class="control-label">Name: </label>
                             <input class="form-control" type="text" name="inputName" placeholder="Name" maxlength="15" required>
                         </div>
-                        <div class="form-group control-group">
+                        <!-- <div class="form-group control-group date">
                             <label for="inputStartDate" class="control-label">Start Date: </label>
-                            <input type="date" name="inputStartDate" min="<%= Date() %>" required>
+                            <input type="date" name="inputStartDate" required>
                         </div>
-                        <div class="form-group control-group">
+                        <div class="form-group control-group date">
                             <label for="inputEndDate" class="control-label">End Date: </label>
-                            <input type="date" name="inputEndDate" min="<%= Date() %>" required>
+                            <input type="text" class="form-control" name="inputEndDate" required>
+                        </div> -->
+                        <div class="input-group input-daterange date">
+                            <input type="text" id="inputStartDate" name="inputStartDate" class="form-control">
+                            <div class="input-group-addon">to</div>
+                            <input type="text" id="inputEndDate" name="inputEndDate" class="form-control">
                         </div>
                         <div class="form-group control-group" style="text-align: center;">
                             <label for="inputIsActive" class="control-label">Active: </label>
@@ -30,7 +36,7 @@
                             <% var games = [] %>
                             <div class="form-inline row" style="text-align: center;">
                                 <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
-                                <select class="form-control" name="selectHomeTeam[<%= i %>]" required>
+                                <select class="form-control selectHomeTeam" name="selectHomeTeam[<%= i %>]" required>
                                     <option value selected>Select the Home Team</option>
                                     <% teams.forEach(function(team){ %>
                                         <option value="<%= team.id %>">
@@ -40,7 +46,7 @@
                                 </select>
                                 <span> VS </span>
                                 <!-- <span for="selectAwayTeam" class="control-label">Away: </span> -->
-                                <select class="form-control" name="selectAwayTeam[<%= i %>]" required>
+                                <select class="form-control selectAwayTeam" name="selectAwayTeam[<%= i %>]" required>
                                     <option value selected>Select the Away Team</option>
                                     <% teams.forEach(function(team){ %>
                                         <option value="<%= team.id %>">
@@ -48,7 +54,7 @@
                                         </option>
                                         <% }) %>
                                 </select>
-                                <input type="date" name="inputGameDate[<%= i %>]" min="<%= Date() %>" required>
+                                <input type="text" class="date gameDate" name="inputGameDate[<%= i %>]" required>
                             </div>
                             <% } %>
                         <div class="form-group control-group">

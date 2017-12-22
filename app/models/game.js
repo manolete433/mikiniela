@@ -20,17 +20,31 @@ const Game = db.define('game', {
   gameDate: {
     type: Sequelize.DATEONLY,
     allowNull: false
+  },
+  weekId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 0,
+    }
   }
 });
 
-//CONTINUE HEEEEEERE
-Week.belongsTo(Game, {
-  //Alias to be used in our routes
-  as: 'game',
-  //Foreign key in our target (parent) DB
-  foreignKey: 'gameId',
-  //Column in our source table
+Game.belongsTo(Week, {
+  as: 'week',
+  foreignKey: 'weekId',
   targetKey: 'id'
 });
+
+
+// //CONTINUE HEEEEEERE TO MAKE THE RELATION
+// Week.belongsTo(Game, {
+//   //Alias to be used in our routes
+//   as: 'game',
+//   //Foreign key in our target (parent) DB
+//   foreignKey: 'gameId',
+//   //Column in our source table
+//   targetKey: 'id'
+// });
 
 module.exports = Game

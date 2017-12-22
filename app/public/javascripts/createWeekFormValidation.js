@@ -1,8 +1,15 @@
 $().ready(function () {
+    $('.date').datepicker({
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#inputStartDate').change(function() {
+        $('.gameDate').val($(this).val());
+    });
     jQuery.validator.addMethod("lettersonly", function (value, element) {
         return this.optional(element) || /^[a-z0-9_- ]+$/i.test(value);
     }, "Please use only a-z0-9_-");
-    $('#createTeamForm').validate({
+    $('#createWeekForm').validate({
         rules: {
             inputName: {
                 minlength: 3,
@@ -10,12 +17,21 @@ $().ready(function () {
                 required: true,
                 lettersonly: true
             },
-            inputImageURL: {
-                minlength: 3,
-                maxlength: 255,
-                url: true
+            inputStartDate: {
+                required: true,
+                date: true
+            },
+            inputEndDate: {
+                required: true,
+                date: true
             }
         },
+        //9 times
+        //inputStartDate
+        //inputEndDate
+        //selectHomeTeam
+        //selectAwayTeam
+        //inputGameDate
         // we could add messages
         // messages: {
         //     inputFirstName: {
