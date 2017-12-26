@@ -24,4 +24,6 @@ const Week = db.define('week', {
   }
 });
 
+// Week.hasMany(Game);
+
 module.exports = Week

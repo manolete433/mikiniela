@@ -2,30 +2,32 @@
     <div class="container">
         <div class="row">
             <h1 style="text-align: center;">
-                <%= week.name %>
+                <%= games[0].week.name %>
             </h1>
+            <div class="container">
+            <table>
+                    <tr>
+                        <th>Home Team</th>
+                        <th>Away Team</th>
+                        <th>Date</th>
+                    </tr>
             <% games.forEach(function(game){ %>
-                <div class="row" style="text-align: center; margin: 0px; padding: 0px;">
-                    <div>
-                        <h4>
-                            <img src="<%= game.homeTeamLogo %>" class="show-team-logo" style="width: 3%; margin: 25px auto; text-align: center;">
-                            <%= game.homeTeamName %> vs
-                                <%= game.awayTeamName %>
-                                    <img src="<%= game.awayTeamLogo %>" class="show-team-logo" style="width: 3%; margin: 25px auto; text-align: center;"> on
-                                    <%= game.gameDate %>
-                        </h4>
-                    </div>
-                </div>
-                <% }) %>
+                <tr>
+                    <td><img src="<%= game.homeTeam.imageURL %>" class="show-team-logo" style="width: 3%; "><%= game.homeTeam.name %></td>
+                    <td><img src="<%= game.awayTeam.imageURL %>" class="show-team-logo" style="width: 3%; "><%= game.awayTeam.name %></td>
+                    <td><%= game.gameDate %></td>
+                </tr>
+            <% }) %>
+            </table>
+        </div>
                     <div style="text-align: center;">
-                        <!-- Below line is causing issues -->
-                        <a class="btn btn-md btn-warning" href="/weeks/<%= week.id %>/edit">Edit</a>
-                        <% if (week.isActive) { %>
-                            <form class="update-form" action="/weeks/<%= week.id %>?_method=DELETE" method="POST">
+                        <a class="btn btn-md btn-warning" href="/weeks/<%= games[0].week.id %>/edit">Edit</a>
+                        <% if (games[0].week.isActive) { %>
+                            <form class="update-form" action="/weeks/<%= games[0].week.id %>?_method=DELETE" method="POST">
                                 <button class="btn btn-md btn-danger">Deactivate</button>
                             </form>
                             <% } else{ %>
-                                <form class="update-form" action="/teams/<%= week.id %>/activate" method="POST">
+                                <form class="update-form" action="/teams/<%= games[0].week.id %>/activate" method="POST">
                                     <button class="btn btn-md btn-success">Activate</button>
                                 </form>
                                 <% } %>

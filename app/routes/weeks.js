@@ -65,60 +65,41 @@ router.post("/", middleware.isLoggedIn, function (req, res, next) {
     });
 });
 
-//Week Show CONTINUE HEEEEEERE!!
+//Week Show
 router.get("/:id", middleware.isLoggedIn, function (req, res) {
-    Week.findById(req.params.id, {
-        // include: [{
-        //         model: Game,
-        //         as: 'games'
-        //     }
-        // ]
-    }).then((foundWeek) => {
-        if (!foundWeek) {
+    Game.findAll({
+        where: {
+            weekId: req.params.id
+        },
+        include: [{
+                model: Week,
+                as: 'week'
+            },
+            {
+                model: Team,
+                as: 'awayTeam'
+            },
+            {
+                model: Team,
+                as: 'homeTeam'
+            }
+        ]
+    }).then((foundGames) => {
+        if (!foundGames) {
             console.log("Week with ID: " + req.body.id + " not found.");
             res.status(404).send("404!!!!");
         } else {
-            var games = []; //to be sent to our show.ejs
-            Game.findAll({
-                where: {
-                    weekId: foundWeek.id
-                },
-                include: [{
-                        model: Team,
-                        as: 'awayTeam'
-                    },
-                    {
-                        model: Team,
-                        as: 'homeTeam'
-                    }
-                ]
-            }).then((foundGames) => {
-                foundGames.forEach(function (game) {
-                    games.push({
-                        'id': game.id,
-                        'homeTeamName': game.homeTeam.name,
-                        'homeTeamLogo': game.homeTeam.imageURL,
-                        'awayTeamName': game.awayTeam.name,
-                        'awayTeamLogo': game.awayTeam.imageURL,
-                        'gameDate': game.gameDate
-                    });
-                });
-            }).then(() => {
-                res.status(200).render("weeks/show", {
-                    week: foundWeek,
-                    games: games
-                });
-            }).catch((error) => {
-                res.status(500).send(error);
-            });
+            res.status(200).render("weeks/show", {
+                                games: foundGames
+                                });
         }
     }).catch((error) => {
-        //we can use flash to show the error!!!
-        res.status(500).send(error);
-    });
+            //we can use flash to show the error!!!
+            res.status(500).send(error);
+            });
 });
 
-// Game Edit
+// Game Edit CONTINUE HERE!!!!
 router.get("/:id/edit", middleware.isLoggedIn, function (req, res) {
     Game.findById(req.params.id, {
         include: [{
