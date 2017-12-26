@@ -24,29 +24,4 @@ const Week = db.define('week', {
   }
 });
 
-// Game.belongsTo(Week, {
-//   as: 'week',
-//   foreignKey: 'weekId',
-//   targetKey: 'id'
-// });
-
-// Week.belongsTo(Game, {
-//   //Alias to be used in our routes
-//   as: 'game',
-//   //Foreign key in our target (parent) DB
-//   foreignKey: 'gameId',
-//   //Column in our source table
-//   targetKey: 'id'
-// });
-
-// //CONTINUE HEEEEEERE TO MAKE THE RELATION
-// Game.belongsTo(Week, {
-//   //Alias to be used in our routes
-//   as: 'week',
-//   //Foreign key in our target (parent) DB
-//   foreignKey: 'weekId',
-//   //Column in our source table
-//   targetKey: 'id'
-// });
-
 module.exports = Week
