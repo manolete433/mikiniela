@@ -1,10 +1,21 @@
 $().ready(function () {
+    // Highlight todays date and close the calendar
     $('.date').datepicker({
         todayHighlight: true,
         autoclose: true
     });
-    $('#inputStartDate').change(function() {
+    // Change the games' dates when setting the start date of the week
+    $('#inputStartDate').change(function () {
         $('.gameDate').val($(this).val());
+    });
+    
+    $('.selectHomeTeam').rules("add", {
+        required: true,
+        notEqualTo: ""
+    });
+    $('.selectAwayTeam').rules("add", {
+        required: true,
+        notEqualTo: ""
     });
     jQuery.validator.addMethod("lettersonly", function (value, element) {
         return this.optional(element) || /^[a-z0-9_- ]+$/i.test(value);
@@ -25,20 +36,7 @@ $().ready(function () {
                 required: true,
                 date: true
             }
-        },
-        //9 times
-        //inputStartDate
-        //inputEndDate
-        //selectHomeTeam
-        //selectAwayTeam
-        //inputGameDate
-        // we could add messages
-        // messages: {
-        //     inputFirstName: {
-        //         required: "Please Enter your firstname",
-        //         minlength: "Your First Name must have at least 2 characters"
-        //     }
-        // },
+        },        
         highlight: function (element) {
             $(element).closest('.control-group').addClass('has-error');
         },

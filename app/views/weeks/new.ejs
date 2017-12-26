@@ -37,7 +37,7 @@
                             <div class="form-inline row" style="text-align: center;">
                                 <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
                                 <select class="form-control selectHomeTeam" name="selectHomeTeam[<%= i %>]" required>
-                                    <option value selected>Select the Home Team</option>
+                                    <option value="">Select the Home Team</option>
                                     <% teams.forEach(function(team){ %>
                                         <option value="<%= team.id %>">
                                             <%= team.name %>
@@ -47,7 +47,7 @@
                                 <span> VS </span>
                                 <!-- <span for="selectAwayTeam" class="control-label">Away: </span> -->
                                 <select class="form-control selectAwayTeam" name="selectAwayTeam[<%= i %>]" required>
-                                    <option value selected>Select the Away Team</option>
+                                    <option value="">Select the Away Team</option>
                                     <% teams.forEach(function(team){ %>
                                         <option value="<%= team.id %>">
                                             <%= team.name %>
