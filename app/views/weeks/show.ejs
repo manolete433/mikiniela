@@ -2,31 +2,38 @@
     <div class="container">
         <div class="row">
             <h1 style="text-align: center;">
-                <%= team.name %>
+                <%= week.name %>
             </h1>
-            <div class="row">
-                <div style="width: 30%; margin: 25px auto; text-align: center;"">
-                    <img src="<%= team.imageURL %>" class="show-team-logo">
-                </div>
-                <!-- Only if admin -->
-                <div style="text-align: center;">
-                    <!-- Below line is causing issues -->
-                    <a class="btn btn-md btn-warning" href="/teams/<%= team.id %>/edit">Edit</a>
-                    <% if (team.isActive) { %>
-                    <form class="update-form" action="/teams/<%= team.id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-md btn-danger">Deactivate</button>
-                    </form>
-                    <% } else{ %>
-                        <form class="update-form" action="/teams/<%= team.id %>/activate" method="POST">
-                            <button class="btn btn-md btn-success">Activate</button>
-                        </form>
-                    <% } %>
-                    <!-- Only if admin -->
+            <% games.forEach(function(game){ %>
+                <div class="row" style="text-align: center; margin: 0px; padding: 0px;">
                     <div>
-                        <a href="/teams">Go Back</a>
+                        <h4>
+                            <img src="<%= game.homeTeamLogo %>" class="show-team-logo" style="width: 3%; margin: 25px auto; text-align: center;">
+                            <%= game.homeTeamName %> vs
+                                <%= game.awayTeamName %>
+                                    <img src="<%= game.awayTeamLogo %>" class="show-team-logo" style="width: 3%; margin: 25px auto; text-align: center;"> on
+                                    <%= game.gameDate %>
+                        </h4>
                     </div>
                 </div>
-            </div>
+                <% }) %>
+                    <div style="text-align: center;">
+                        <!-- Below line is causing issues -->
+                        <a class="btn btn-md btn-warning" href="/weeks/<%= week.id %>/edit">Edit</a>
+                        <% if (week.isActive) { %>
+                            <form class="update-form" action="/weeks/<%= week.id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-md btn-danger">Deactivate</button>
+                            </form>
+                            <% } else{ %>
+                                <form class="update-form" action="/teams/<%= week.id %>/activate" method="POST">
+                                    <button class="btn btn-md btn-success">Activate</button>
+                                </form>
+                                <% } %>
+                                    <!-- Only if admin -->
+                                    <div>
+                                        <a href="/weeks">Go Back</a>
+                                    </div>
+                    </div>
         </div>
     </div>
 
