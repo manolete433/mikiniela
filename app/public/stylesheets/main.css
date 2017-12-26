@@ -52,19 +52,22 @@
     overflow: hidden;
 }
 
-td, th {
+/* td, th {
     border: 1px solid #dddddd;
     padding: 8px;
+    text-align: center;
+} */
+
+tr{
     text-align: center;
 }
 
 tr:nth-child(even) {
     background-color: #dddddd;
-    text-align: center;
 }
 
-table {
+/* table {
     border-collapse: collapse;
     margin: auto;
     width: 70%;
-}
+} */
