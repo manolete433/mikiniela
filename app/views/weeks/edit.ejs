@@ -1,31 +1,58 @@
 <% include ../partials/header %>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-    <script src="/javascripts/createTeamFormValidation.js" type="text/javascript"></script>
+    <script src="/javascripts/createWeekFormValidation.js" type="text/javascript"></script>
+    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <link link rel="stylesheet" type="text/css" href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.css"></script>
 
     <div class="container">
         <div class="row">
-            <h1 style="text-align: center;">Edit Team</h1>
+            <h1 style="text-align: center;">Edit <%= games[0].week.name %></h1>
             <div class="row">
-                <div style="width: 30%; margin: 25px auto;">
-                    <form action="/teams/<%= team.id %>?_method=PUT" method="POST" name="createTeamForm" id="createTeamForm">
-                        <div class="form-group control-group">
+                <div style="width: 70%; margin: 25px auto;">
+                    <form action="/weeks" method="POST" data-toggle="validator" name="createWeekForm" id="createWeekForm">
+                        <div class="form-group control-group"  style="margin: auto">
                             <label for="inputName" class="control-label">Name: </label>
-                            <input class="form-control" type="text" name="inputName" value="<%= team.name %>" maxlength="15" required>
+                            <input class="form-control" type="text" name="inputName" value="<%= games[0].week.name %>" maxlength="15" required>
                         </div>
-                        <div class="form-group control-group">
-                            <label for="inputImageURL" class="control-label">Image URL: </label>
-                            <input class="form-control" type="url" name="inputImageURL" value="<%= team.imageURL %>" placeholder="Image URL">
+                        <div class="input-group input-daterange date col-xs-5" style="margin: auto">
+                            <input type="text" id="inputStartDate" name="inputStartDate" class="form-control" value="<%= moment(games[0].week.startDate).format('l'); %>">
+                            <div class="input-group-addon">to</div>
+                            <input type="text" id="inputEndDate" name="inputEndDate" class="form-control" value="<%= moment(games[0].week.endDate).format('l'); %>">
                         </div>
                         <div class="form-group control-group" style="text-align: center;">
                             <label for="inputIsActive" class="control-label">Active: </label>
-                            <input class="form-control" type="checkbox" name="inputIsActive" <% if (team.isActive) { %> checked
-                            <% } %>>
+                            <input class="form-control" type="checkbox" name="inputIsActive" checked>
                         </div>
+                        <!-- Number of games is going to be num of teams/2 -->
+                        <% for(var i = 0; i < (games.length); i++) { %>
+                            <div class="form-inline row" style="text-align: center;">
+                                <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
+                                <select class="form-control selectHomeTeam" name="selectHomeTeam[<%= i %>]" required>
+                                    <option value="games[<%= i %>].homeTeam.id"><%= games[i].homeTeam.name %></option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <span> VS </span>
+                                <!-- <span for="selectAwayTeam" class="control-label">Away: </span> -->
+                                <select class="form-control selectAwayTeam" name="selectAwayTeam[<%= i %>]" required>
+                                        <option value="games[<%= i %>].awayTeam.id"><%= games[i].awayTeam.name %></option>
+                                    <% teams.forEach(function(team){ %>
+                                        <option value="<%= team.id %>">
+                                            <%= team.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <input type="text" class="date gameDate" name="inputGameDate[<%= i %>]" value="<%= moment(games[i].gameDate).format('l'); %>" required>
+                            </div>
+                            <% } %>
                         <div class="form-group control-group">
                             <button class="btn btn-large btn-primary btn-block" type="Submit">Submit</button>
                         </div>
                     </form>
-                    <a href="/teams">Go Back</a>
+                    <a href="/weeks">Go Back</a>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@
             <div class="row">
                 <div style="width: 70%; margin: 25px auto;">
                     <form action="/weeks" method="POST" data-toggle="validator" name="createWeekForm" id="createWeekForm">
-                        <div class="form-group control-group">
+                        <div class="form-group control-group"  style="margin: auto">
                             <label for="inputName" class="control-label">Name: </label>
                             <input class="form-control" type="text" name="inputName" placeholder="Name" maxlength="15" required>
                         </div>
@@ -22,7 +22,7 @@
                             <label for="inputEndDate" class="control-label">End Date: </label>
                             <input type="text" class="form-control" name="inputEndDate" required>
                         </div> -->
-                        <div class="input-group input-daterange date">
+                        <div class="input-group input-daterange date col-xs-5" style="margin: auto">
                             <input type="text" id="inputStartDate" name="inputStartDate" class="form-control">
                             <div class="input-group-addon">to</div>
                             <input type="text" id="inputEndDate" name="inputEndDate" class="form-control">
@@ -33,7 +33,6 @@
                         </div>
                         <!-- Number of games is going to be num of teams/2 -->
                         <% for(var i = 0; i < (teams.length / 2); i++) { %>
-                            <% var games = [] %>
                             <div class="form-inline row" style="text-align: center;">
                                 <!-- <span for="selectHomeTeam" class="control-label">Home: </span> -->
                                 <select class="form-control selectHomeTeam" name="selectHomeTeam[<%= i %>]" required>

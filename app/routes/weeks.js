@@ -5,6 +5,7 @@ const Week = require("../models/week");
 const Game = require("../models/game");
 const Team = require("../models/team");
 var middleware = require("../middleware");
+var moment = require('moment');
 
 //Weeks Index
 router.get("/", middleware.isLoggedIn, function (req, res, next) {
@@ -99,10 +100,17 @@ router.get("/:id", middleware.isLoggedIn, function (req, res) {
             });
 });
 
-// Game Edit CONTINUE HERE!!!!
+// Game Edit
 router.get("/:id/edit", middleware.isLoggedIn, function (req, res) {
-    Game.findById(req.params.id, {
+    Game.findAll({
+        where: {
+            weekId: req.params.id
+        },
         include: [{
+                model: Week,
+                as: 'week'
+            },
+            {
                 model: Team,
                 as: 'awayTeam'
             },
@@ -111,28 +119,23 @@ router.get("/:id/edit", middleware.isLoggedIn, function (req, res) {
                 as: 'homeTeam'
             }
         ]
-    }).then((foundGame) => {
-        if (!foundGame) {
-            console.log("Game with ID: " + req.body.id + " not found.");
+    }).then((foundGames) => {
+        if (!foundGames) {
+            console.log("Week with ID: " + req.body.id + " not found.");
             res.status(404).send("404!!!!");
         } else {
-            Team.findAll({
-                order: [
-                    ['name', 'ASC']
-                ]
-            }).then((foundTeams) => {
-                res.status(200).render("games/edit", {
-                    game: foundGame,
-                    teams: foundTeams
-                });
-            }).catch((error) => {
-                res.status(500).send(error);
+            Team.findAll({}).then((teams) => {
+                res.status(200).render("weeks/edit", {
+                    moment: moment,
+                    games: foundGames,
+                    teams: teams
+                    });
             });
         }
     }).catch((error) => {
-        //we can use flash to show the error!!!
-        res.status(500).send(error);
-    });
+            //we can use flash to show the error!!!
+            res.status(500).send(error);
+            });
 });
 
 //games Update
